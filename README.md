@@ -31,10 +31,12 @@ OBSERVAÇÃO IMPORTANTE: Esse projeto está escrito, no momento, para ambientes 
 
    - Configurar corretamente o driver DUMMY
      -- arquivo ups.conf
+       ```
        [meunobreak]
         driver = dummy-ups
         port = /run/nhs/nut.seq
         desc = Meu nobreak NHS
+       ```
 
 3) Integração MQTT
    Envie as informações via MQTT para seu broker favorito, para tratar as mesmas da melhor forma, inclusive possibilitando seu uso no GRAFANA. Os dados são enviados em formato JSON para melhor tratamento e compatibilidade.
