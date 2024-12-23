@@ -1,46 +1,24 @@
 #!/bin/bash
-# NOTIFICA.SH - Script de notificação para o upsmon do NUT
+# Exemplo de um arquivo para o upsmon.conf
+# Coloque esse arquivo no NOTIFYCMD e veja o que sera passado que pode ser aproveitado
+# Existem algumas variaveis de ambiente, por isso veja e cuide bem o que eh passado como parametro e o que eh passado como variavel de ambiente
 
-# Verifique se os parâmetros esperados foram passados
-if [ "$#" -lt 2 ]; then
-  echo "Uso: $0 <NOME_UPS> <EVENTO>"
-  exit 1
-fi
+declare -A key_value_array
+declare -a key_order
+index=1
+for arg in "$@"; do
+  key="arg$index"
+  key_value_array[$key]="$arg"
+  key_order+=("$key")
+  ((index++))
+done
 
-NOME_UPS="$1"
-EVENTO="$2"
+# Caminho do arquivo de saída
+output_file="/tmp/dados"
 
-# Defina o log de eventos
-LOG_FILE="/var/log/nut-eventos.log"
-
-# Função para enviar notificações (modifique conforme necessário)
-enviar_notificacao() {
-  MENSAGEM="$1"
-  # Exemplo: Enviar para um e-mail ou integrar com outro sistema
-  echo "$MENSAGEM" | mail -s "Evento no-break: $NOME_UPS" seuemail@example.com
-}
-
-# Registre o evento no log
-DATA=$(date +"%Y-%m-%d %H:%M:%S")
-echo "$DATA - UPS: $NOME_UPS - Evento: $EVENTO" >> "$LOG_FILE"
-
-# Ações específicas com base no evento
-case "$EVENTO" in
-  "ONBATT")
-    enviar_notificacao "Aviso: O no-break $NOME_UPS está operando com bateria. Verifique a situação da energia elétrica."
-    ;;
-  "ONLINE")
-    enviar_notificacao "Informação: O no-break $NOME_UPS voltou a operar com energia elétrica normal."
-    ;;
-  "LOWBATT")
-    enviar_notificacao "Alerta: O no-break $NOME_UPS está com bateria fraca. Ação imediata é necessária."
-    ;;
-  "SHUTDOWN")
-    enviar_notificacao "Crítico: O sistema será desligado devido ao evento SHUTDOWN no no-break $NOME_UPS."
-    ;;
-  *)
-    enviar_notificacao "Evento desconhecido: $EVENTO ocorrido no no-break $NOME_UPS."
-    ;;
-esac
-
-exit 0
+# Salva o array no arquivo na ordem correta
+echo "Array de chave-valor:" > "$output_file"
+for key in "${key_order[@]}"; do
+  echo "$key: ${key_value_array[$key]}" >> "$output_file"
+done
+set >> /tmp/dados
