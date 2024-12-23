@@ -919,14 +919,11 @@ def mqtt(pkt,local,topico = "nhsups",subtopico = "evento"):
     # Defina as variaveis do mqtt aqui
     global mqttcli
     global mqtt_connected
-    mqtt_host = "192.168.11.100"
+    mqtt_host = "meuhost"
     mqtt_port = 1883
     mqtt_user = None
     mqtt_pass = None
     mqtt_qos = 0
-    # Como voce vai identificar o seu ups no mqtt
-    # Se deixar como none, o software ira usar o nome do nobreak
-    mqtt_id = "lovita"
     # Inicializa o mqtt
     if (mqttcli == None):
         try:
