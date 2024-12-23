@@ -10,6 +10,7 @@ import termios
 import json
 import sqlite3
 import paho.mqtt.client as mqttclient
+import config
 
 datapacket = []
 datapacketstart = False
@@ -26,8 +27,6 @@ minmax = {
             "amperagem_saida": {"max": float('-inf'), "min": float('inf')}
         }
         
-logfile = "/var/log/nhs.log"
-
 # Declaracao do array com os dados do nobreak e VA
 # Caso queira sobrescrever, va ao codigo principal
 upsinfo = {
@@ -101,6 +100,31 @@ upsinfo = {
     69: {"upsdesc": "PREMIUM ONLINE 3000VA", "VA": 3000},
     70: {"upsdesc": "LASER ONLINE 4000VA", "VA": 4000},
 }
+
+def getconfig(chave):
+    """
+    Lê um arquivo de configuração no formato chave=valor e retorna o valor associado à chave.
+
+    :param file_path: Caminho para o arquivo de configuração.
+    :param key: Nome da chave a ser buscada.
+    :return: Valor correspondente à chave ou None se a chave não for encontrada.
+    """
+    file_path = "config.txt"
+    retval = None
+    if (os.path.exists(file_path)):
+        with open(file_path, 'r') as file:
+            for line in file:
+                # Remove espaços e ignora linhas vazias ou comentários
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                # Divide a linha no formato chave=valor
+                if '=' in line:
+                    config_key, config_value = line.split('=', 1)
+                    if config_key.strip().upper() == chave.upper():
+                        retval = config_value.strip()
+    return retval
+
 def imprime(dados):
     adado = []
     hdado = []
@@ -128,9 +152,8 @@ def invertearray(arr):
     return arr[::-1]
     
 def slog(s,endchr="\r\n",debug=False,lf = None):
-    global logfile
     if (lf == None):
-        lf = logfile
+        lf = config.arquivolog
     arq = open(lf,"a+")
     arq.write(time.strftime("%d/%m/%Y %H:%M:%S") + " -- " + str(s).encode('utf-8','replace').decode('utf-8','replace') + endchr)
     arq.close()
@@ -213,10 +236,14 @@ def imprimir_bits(byte):
 def tratar_datapacket(pacote,tempoleitura,DebugTela = False,pkt_infonobreak = None):
     # Os pacotes NHS tem varios tamanhos e respostas
     # Consulte documentacao para maiores detalhes
-    resposta = {}
-    if (len(pacote) >= 17):
+    resposta = None
+    lenpacote = len(pacote)
+    tamanhopacote = convertebyte(pacote[1])
+    # Nunca confie na informacao repassada do pacote. Sempre confira o tamanho do pacote com o seu tamanho real
+    if (lenpacote >= 17) and (tamanhopacote == lenpacote):
+        resposta = {}
         resposta["tempoleitura"] = tempoleitura
-        resposta["comprimento"] = convertebyte(pacote[1])
+        resposta["comprimento"] = tamanhopacote
         resposta["tipo_pacote"] = pacote[2].decode('utf-8', 'replace')
         if (resposta["comprimento"] in [18,50]):
             # Inicializa alguns valores obrigatorios
@@ -264,10 +291,9 @@ def tratar_datapacket(pacote,tempoleitura,DebugTela = False,pkt_infonobreak = No
                 resposta["checksum"] = convertebyte(pacote[16])
             else:
                 resposta["checksum"] = convertebyte(pacote[48])
+            resposta["checksum_OK"] = False
             if (checksum == resposta["checksum"]):
-                resposta["checksum_OK"] = True
-            else:
-                resposta["checksum_OK"] = False
+                resposta["checksum_OK"] = True                
             if (resposta["comprimento"] == 50):
                 i = 0
                 strSerial = ''
@@ -363,14 +389,12 @@ def tratar_datapacket(pacote,tempoleitura,DebugTela = False,pkt_infonobreak = No
             valores["bateria_baixa"] = 'S' if bool(status & 0b00000010) else 'N'
             valores["modo_bateria"] = 'S' if bool(status & 0b00000001) else 'N'
             resposta["valores_status"] = valores
-
             resposta["checksum"] = convertebyte(pacote[19])
             checksum = calcula_checksum(pacote)
             resposta["checksum_calculado"] = checksum
+            resposta["checksum_OK"] = False
             if (checksum == resposta["checksum"]):
-                resposta["checksum_OK"] = True
-            else:
-                resposta["checksum_OK"] = False
+                resposta["checksum_OK"] = True            
             resposta["dadosnobreak"] = pkt_infonobreak
     if (DebugTela):
         pprint.pprint(resposta)
@@ -424,7 +448,9 @@ def atualizarmaximos(pkt_dados):
 def js(pkt):
     # Funcao que ira criar a saida de dados para o JSON
     # Defina aqui o caminho onde voce quer que o software guarde os dados
-    arquivo = "/run/nhs/nhs.json"
+    arquivo = getconfig("arquivojson")
+    if (arquivo == None):
+        arquivo = "/run/nhs/nhs.json"
     diretorio = os.path.dirname(arquivo)
     if (not os.path.exists(diretorio)):
         os.makedirs(diretorio)
@@ -434,11 +460,12 @@ def js(pkt):
     arq.close()
 
 def nut(pkt):        
-    global minmax
-    
     # Funcao que ira criar a saida de dados para o NUT
     # Defina aqui o caminho onde voce quer que o software guarde os dados
-    arquivo = "/run/nhs/nut.seq"
+    global minmax
+    arquivo = getconfig("arquivonut")
+    if (arquivo == None):
+        arquivo = "/run/nhs/nut.seq"
     diretorio = os.path.dirname(arquivo)
     if (not os.path.exists(diretorio)):
         os.makedirs(diretorio)
@@ -803,7 +830,7 @@ def nut(pkt):
         #                                 to "Warning" state (percent)        | 50
         #| battery.charger.status       | Status of the battery charger
         #                                 (see the note below)                | charging
-        arq.write("battery.charger.status: %s\r\n" % btstate);
+        arq.write("battery.charger.status: %s\r\n" % btstate)
         #| battery.voltage              | Battery voltage (V)                 | 24.84
         arq.write("battery.voltage: %04.2f\r\n" % pkt["tensao_atual_bateria"])
         #| battery.voltage.cell.max     | Maximum battery voltage seen of the
@@ -919,24 +946,19 @@ def mqtt(pkt,local,topico = "nhsups",subtopico = "evento"):
     # Defina as variaveis do mqtt aqui
     global mqttcli
     global mqtt_connected
-    mqtt_host = "meuhost"
-    mqtt_port = 1883
-    mqtt_user = None
-    mqtt_pass = None
-    mqtt_qos = 0
-    # Inicializa o mqtt
+
     if (mqttcli == None):
         try:
             mqttcli = mqttclient.Client(local)
         except:
             mqttcli = mqttclient.Client(mqttclient.CallbackAPIVersion.VERSION2,local)
         slog("Cliente MQTT Inicializado")
-        mqttcli.username_pw_set(mqtt_user,mqtt_pass)
+        mqttcli.username_pw_set(config.mqtt_user,config.mqtt_pass)
     else:
         slog("Cliente MQTT ja inicializado")
     if (mqtt_connected == False):
         try:
-            mqttcli.connect(mqtt_host,mqtt_port)
+            mqttcli.connect(config.mqtt_host,config.mqtt_port)
             slog("Conectando cliente MQTT")
             mqttcli.loop_start()
             slog("Cliente MQTT Conectado")
@@ -945,7 +967,7 @@ def mqtt(pkt,local,topico = "nhsups",subtopico = "evento"):
     else:
         slog("Cliente MQTT ja conectado")
     slog("Disparando mqtt")
-    mqttcli.publish(topico + "/" + subtopico,json.dumps(junta(pkt)),qos=mqtt_qos)
+    mqttcli.publish(topico + "/" + subtopico,json.dumps(junta(pkt)),qos=config.mqtt_qos)
 
 def bd(pkt):
     # Saida para banco de dados
