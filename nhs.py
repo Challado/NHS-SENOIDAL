@@ -25,7 +25,7 @@ try:
     while (True):
         if ((not ser) or (ser.isOpen() == False)):
             ser = serial.Serial(config.device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True, exclusive=True)
-            slog("Serial estava fechada. Reabrindo")
+            slog("Serial estava fechada. Reabrindo...")
             if (config.ativaJSON):
                 js(None)
             if (config.ativaNUT):
@@ -103,7 +103,6 @@ try:
                                     pkt["eficiencia"] = (pkt["VACOUTRMS"] * pkt["VACINRMS"]) / 100
                                     atualizarmaximos(pkt)
                                     # Agora para frente comecamos a fazer os PROCESSAMENTOS dos pacotes
-                                    #slog(pprint.pformat(pkt))
                                     if (config.ativaNUT):
                                         nut(pkt)
                                     if (config.ativaJSON):
@@ -129,12 +128,12 @@ try:
         i = i + 1
         
 finally:
-    slog("Enviando pacote de finalizacao")
+    slog("Enviando pacote de finalizacao...")
     if (ser):
         enviapacote(ser,4)
         ser.close()
-        slog("Pacote enviado e serial finalizada")
+        slog("Pacote enviado e serial finalizada.")
     else:
-        slog("Serial nao estava aberto")
+        slog("Serial nao estava aberto. Finalizando mesmo assim.")
      
         
