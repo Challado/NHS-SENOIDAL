@@ -27,7 +27,10 @@ tensao_bateria = 12
 device = "/dev/ttyACM0"
 # Caminho do arquivo de log
 arquivolog = "/var/log/nhs.log"
-
+# Arquivo que sera monitorado pelo NUT
+arquivonut = "/run/nhs/nut.seq"
+# Arquivo de saida JSON
+arquivojson = "/run/nhs/nhs.json"
 # Host MQTT
 mqtt_host = "meuhost"
 # Porta MQTT
