@@ -13,8 +13,9 @@ OBSERVAÇÃO IMPORTANTE: Esse projeto está escrito, no momento, para ambientes 
     - python3-paho-mqtt
     - bibliotecas do seu banco de dados (se for utilizar)
     - python3-serial
-  - Faça o download dos arquivos nhs.py e funcoes.py
+  - Faça o download dos arquivos nhs.py, funcoes.py e config.py
   - Coloque no diretório de sua preferência
+  - Edite o arquivo de configurações config.py com os dados relevantes
   - Verifique as permissões do arquivo /var/log/nhs.log
   - Configure o arquivo de inicialização automática (existe um exemplo para o systemd nesse repositório)
 
@@ -30,10 +31,12 @@ OBSERVAÇÃO IMPORTANTE: Esse projeto está escrito, no momento, para ambientes 
 
    - Configurar corretamente o driver DUMMY
      -- arquivo ups.conf
+       ```
        [meunobreak]
         driver = dummy-ups
         port = /run/nhs/nut.seq
         desc = Meu nobreak NHS
+       ```
 
 3) Integração MQTT
    Envie as informações via MQTT para seu broker favorito, para tratar as mesmas da melhor forma, inclusive possibilitando seu uso no GRAFANA. Os dados são enviados em formato JSON para melhor tratamento e compatibilidade.
