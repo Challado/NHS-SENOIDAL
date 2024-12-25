@@ -22,10 +22,13 @@ try:
     lastdp = None
     pkt = None
     pkt_info = None
+    # Abre a porta Serial
+    ser = serial.Serial(config.device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True, exclusive=True)
     while (True):
-        if ((not ser) or (ser.isOpen() == False)):
+        if (ser.isOpen() == False):
             ser = serial.Serial(config.device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True, exclusive=True)
             slog("Serial estava fechada. Reabrindo...")
+
             if (config.ativaJSON):
                 js(None)
             if (config.ativaNUT):
@@ -122,7 +125,13 @@ try:
                                         enviapacote(ser,random.randint(0,1))
                     dadoswaiting = ser.in_waiting
             else:
-                slog(f"Tempo Insuficiente: incrementando o tempo de leitura. Tempo atual {temposleep} s")
+                slog("Pacote de Hardware nao foi recebido ainda")
+                if (send_extended < 4):
+                    enviapacote(ser,1)
+                    send_extended = send_extended + 1
+                else:
+                    enviapacote(ser,random.randint(0,1))
+                slog(f"Tempo Insuficiente: incrementando o tempo de leitura. Tempo atual {temposleep} s.")
                 temposleep = temposleep + 0.1
         time.sleep(temposleep)
         i = i + 1
