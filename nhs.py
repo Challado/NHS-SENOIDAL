@@ -122,15 +122,9 @@ try:
                                             mqtt(pkt,config.nome,subtopico=config.nome)
                                     if (config.ativaBD):
                                         bd(pkt)
-                                else:
-                                    slog("Pacote de Hardware nao foi recebido ainda")
-                                    if (send_extended < 4):
-                                        enviapacote(ser,1)
-                                        send_extended = send_extended + 1
-                                    else:
-                                        enviapacote(ser,random.randint(0,1))
                     dadoswaiting = ser.in_waiting
-            else:
+            if (pkt_info == None)
+                # Ainda nao foi inicializado o sistema e/ou nao recebi o pacote de hardware. Tentando enviar para receber os dados
                 slog("Pacote de Hardware nao foi recebido ainda")
                 if (send_extended < 4):
                     enviapacote(ser,1)
