@@ -6,6 +6,7 @@ import json
 import pprint
 import random
 import config
+import traceback
 from funcoes import *
 
 # Variaveis de controle
@@ -140,7 +141,8 @@ try:
                 temposleep = temposleep + 0.1
         time.sleep(temposleep)
         i = i + 1
-        
+except Exception as inst:
+    slog("Houve uma excecao: %s -- %s" % (inst, traceback.format_exc(sys.exc_info()[2])))       
 finally:
     slog("Enviando pacote de finalizacao...")
     if (ser):
