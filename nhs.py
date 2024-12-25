@@ -83,7 +83,9 @@ try:
                                     # Calculo da potencia atual
                                     pkt["potencia_nominal_atual"] = pkt["potencia_nominal"] * (pkt["POTRMS"] / 100)
                                     pkt["potencia_aparente_atual"] =  pkt["potencia_aparente"] * (pkt["POTRMS"] / 100)
-                                    pkt["amperagem_saida"] = pkt["potencia_aparente_atual"] / config.tensao_bateria
+                                    pkt["amperagem_saida"] = 0
+                                    if (config.tensao_bateria > 0):
+                                        pkt["amperagem_saida"] = pkt["potencia_aparente_atual"] / config.tensao_bateria
                                     # Calculo da autonomia
                                     # Calculo Basico: 
                                     # Potencia sendo consumida em Watts / Corrente da Bateria = Corrente Atual
@@ -93,7 +95,10 @@ try:
                                     # Outra conta que passaram
                                     # Duracao da Bateria = ((Ampere-Hora da Bateria * Tensão da Bateria em V * fator_conversao) / Consumo em Watts) * 3600
                                     #pkt["autonomia"] = (ah / pkt["amperagem_saida"]) * 3600
-                                    pkt["autonomia"] = ((config.ah * config.tensao_bateria * config.fator_conversao) / pkt["potencia_aparente_atual"]) * 3600
+                                    if (pkt["potencia_aparente_atual"] > 0):
+                                        pkt["autonomia"] = ((config.ah * config.tensao_bateria * config.fator_conversao) / pkt["potencia_aparente_atual"]) * 3600
+                                    else:
+                                        pkt["autonomia"] = ((config.ah * config.tensao_bateria * config.fator_conversao)) * 3600                                       
                                     if (pkt["valores_status"]["saida_em_220_V"] == 'S'):
                                         pkt["tensao_saida"] = pkt_info["tensao_de_saida_220_V"]
                                         pkt["sobretensao"] = pkt_info["sobretensao_em_220_V"]
