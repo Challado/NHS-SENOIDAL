@@ -4,6 +4,7 @@ import json
 import time
 import pprint
 import os
+import re
 
 def copiar_a_partir_do_elemento(arr, num):
     # Encontra o índice do número fornecido
@@ -16,42 +17,50 @@ def copiar_a_partir_do_elemento(arr, num):
         return "Número não encontrado no array."
 
 def gerar_mib(array_dados, oid_base, nome_mib="NHS-SNMP-MIB", caminho_saida="nhs-snmp-mib.txt"):
-    # Cabeçalho do arquivo MIB
-    cabecalho = f"""
+    basemib = oid_base.split('.')[-2]  # Extrai 9999 de .1.3.6.1.4.1.9999.1
+
+    nome_mib_sanitizado = re.sub(r'[^a-zA-Z0-9]','',nome_mib).lower()
+
+    cabecalho = f"""\
 {nome_mib.upper()} DEFINITIONS ::= BEGIN
 
 IMPORTS
-    MODULE-IDENTITY, OBJECT-TYPE, Integer32 FROM SNMPv2-SMI
+    OBJECT-GROUP FROM SNMPv2-CONF
+    MODULE-IDENTITY, OBJECT-TYPE, Integer32, enterprises FROM SNMPv2-SMI
     DisplayString FROM SNMPv2-TC;
 
--- Module Identity
-{nome_mib.lower()} MODULE-IDENTITY
+{nome_mib_sanitizado} MODULE-IDENTITY
     LAST-UPDATED "{time.strftime("%Y%m%d%H%MZ", time.gmtime())}"
     ORGANIZATION "Gerado Automaticamente"
     CONTACT-INFO "lucas@lucas.inf.br"
-    DESCRIPTION 
+    DESCRIPTION "NHS UPS SNMP"
+    REVISION "{time.strftime("%Y%m%d%H%MZ", time.gmtime())}"
+    DESCRIPTION
         "This is a dynamically generated MIB."
-    ::= {{ {oid_base.replace('.',' ').strip()} }}
+    ::= {{ enterprises {basemib} }}
 
--- Object Identifiers
+{nome_mib_sanitizado}Objects OBJECT IDENTIFIER ::= {{ {nome_mib_sanitizado} 1 }}
+
 """
 
     objetos = []
     grupo = []
     posicao = 1
+
     for linha in array_dados:
         oid, tipo, valor, nome = linha
+        parte_relativa = oid.replace(oid_base + ".", "").replace('.', ' ')
+
+        # Sanitiza o nome do objeto
+        nome_sanitizado = re.sub(r'[^a-zA-Z0-9]','', nome)
+        nomegrupo = f"{nome_sanitizado}{posicao}".lower()
+
         if tipo == "INTEGER":
             tipo_snmp = "Integer32"
         elif tipo == "STRING":
             tipo_snmp = "DisplayString"
         else:
             raise ValueError(f"Tipo desconhecido: {tipo}")
-
-        nomegrupo = ''.join([char for char in nome if char.isalnum()]) + str(posicao)
-        nomegrupo = nomegrupo.lower()
-        grupo.append(nomegrupo)
-       
 
         descricao = f"""
 {nomegrupo} OBJECT-TYPE
@@ -60,43 +69,43 @@ IMPORTS
     STATUS      current
     DESCRIPTION
         "OID dynamically generated for {nome}."
-    ::= {{ {nome_mib.lower()} {oid.replace(oid_base,'').replace('.',' ').strip()} }}
+    ::= {{ {nome_mib_sanitizado}Objects {parte_relativa} }}
 """
         objetos.append(descricao)
-        posicao = posicao + 1
+        grupo.append(nomegrupo)
+        posicao += 1
 
-    rodape = "END\n"
+    # Adiciona grupo de conformidade
+    conformance = f"""
+{nome_mib_sanitizado}Conformance OBJECT IDENTIFIER ::= {{ {nome_mib_sanitizado} 2 }}
 
-    cgroup = """\r\nnhsConformanceGroup GROUP
-    OBJECTS { %s }
+{nome_mib_sanitizado}Group OBJECT-GROUP
+    OBJECTS {{ {', '.join(grupo)} }}
     STATUS  current
-    DESCRIPTION "Conformance group for tempoleitura and comprimento OIDs."
-    ::= { %s 2 }\r\n""" % (",".join(grupo),nome_mib.lower())
+    DESCRIPTION
+        "Grupo de conformidade para todos os objetos da MIB."
+    ::= {{ {nome_mib_sanitizado}Conformance 1 }}
+"""
 
-    # Criação do conteúdo do arquivo
-    conteudo = cabecalho + "".join(objetos) + rodape
+    conteudo = cabecalho + "".join(objetos) + conformance + "\nEND\n"
 
-    # Salvar no arquivo
     with open(caminho_saida, "w") as arquivo:
         arquivo.write(conteudo)
 
     print(f"MIB gerada com sucesso em '{caminho_saida}'.")
 
-
-
 def is_float(string):
     try:
-        # float() is a built-in function
         float(string)
         return True
     except ValueError:
         return False
-    
+
 def json_to_array(data, base_oid, sequence_start=1):
     result = []
     sequence = sequence_start
 
-    def process_element(key, value, parent_oid,seq = 1):
+    def process_element(key, value, parent_oid, seq=1):
         oid = f"{parent_oid}.{seq}"
         intseq = 1
         if isinstance(value, dict):
@@ -105,12 +114,12 @@ def json_to_array(data, base_oid, sequence_start=1):
                 intseq += 1
         elif isinstance(value, list):
             for idx, item in enumerate(value):
-                process_element(f"{key}_{idx}", item, oid,intseq)
+                process_element(f"{key}_{idx}", item, oid, intseq)
                 intseq += 1
         else:
-            if (is_float(value)):
+            if is_float(value):
                 value_type = "INTEGER"
-                value = round(value)
+                value = round(float(value))
             else:
                 value_type = "STRING"
                 value = str(value)
@@ -118,7 +127,7 @@ def json_to_array(data, base_oid, sequence_start=1):
         seq += 1
 
     for key, value in data.items():
-        process_element(key, value, base_oid,sequence)
+        process_element(key, value, base_oid, sequence)
         sequence += 1
 
     return result
@@ -141,7 +150,7 @@ else:
             js = json.load(jsarq)
             jsarq.close()
 
-            valores = json_to_array(js,oid_base)        
+            valores = json_to_array(js,oid_base)
             if (operation == "imprime"):
                 for v in valores:
                     print(v)
@@ -157,4 +166,4 @@ else:
     else:
         print("%s\r\n%s\r\n%s" % (oid, "STRING", "Arquivo NHS JSON não encontrado"))
         arq.write(time.strftime("%d/%m/%Y %H:%M:%S") + " -- " +  " ".join(sys.argv) + " -- " + "Arquivo NHS JSON não encontrado" + "\r\n")
-arq.close()                
+arq.close()
