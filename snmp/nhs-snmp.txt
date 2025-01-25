@@ -1,0 +1,1278 @@
+NHS-SNMP-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    OBJECT-GROUP FROM SNMPv2-CONF
+    MODULE-IDENTITY, OBJECT-TYPE, Integer32, enterprises FROM SNMPv2-SMI
+    DisplayString FROM SNMPv2-TC;
+
+nhssnmpmib MODULE-IDENTITY
+    LAST-UPDATED "202501251742Z"
+    ORGANIZATION "Gerado Automaticamente"
+    CONTACT-INFO "lucas@lucas.inf.br"
+    DESCRIPTION "NHS UPS SNMP"
+    REVISION "202501251742Z"
+    DESCRIPTION 
+        "This is a dynamically generated MIB."
+    ::= { enterprises 9999 }
+
+nhssnmpmibObjects OBJECT IDENTIFIER ::= { nhssnmpmib 1 }
+
+
+tempoleitura1 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tempoleitura."
+    ::= { nhssnmpmibObjects 1 }
+
+comprimento2 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for comprimento."
+    ::= { nhssnmpmibObjects 2 }
+
+tipopacote3 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tipo_pacote."
+    ::= { nhssnmpmibObjects 3 }
+
+tensaodeentradarmspartealta4 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_de_entrada_rms_parte_alta."
+    ::= { nhssnmpmibObjects 4 }
+
+tensaodeentradarmspartebaixa5 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_de_entrada_rms_parte_baixa."
+    ::= { nhssnmpmibObjects 5 }
+
+vacinrms6 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for VACINRMS."
+    ::= { nhssnmpmibObjects 6 }
+
+tensaobateriapartealta7 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_bateria_parte_alta."
+    ::= { nhssnmpmibObjects 7 }
+
+tensaobateriapartebaixa8 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_bateria_parte_baixa."
+    ::= { nhssnmpmibObjects 8 }
+
+vdcmed9 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for VDCMED."
+    ::= { nhssnmpmibObjects 9 }
+
+tensaoatualbateria10 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_atual_bateria."
+    ::= { nhssnmpmibObjects 10 }
+
+potrms11 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for POTRMS."
+    ::= { nhssnmpmibObjects 11 }
+
+tensaodeentradaminimapartealta12 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_de_entrada_minima_parte_alta."
+    ::= { nhssnmpmibObjects 12 }
+
+tensaodeentradaminimapartebaixa13 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_de_entrada_minima_parte_baixa."
+    ::= { nhssnmpmibObjects 13 }
+
+vacinrmsmin14 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for VACINRMSMIN."
+    ::= { nhssnmpmibObjects 14 }
+
+tensaodeentradamaximapartealta15 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_de_entrada_maxima_parte_alta."
+    ::= { nhssnmpmibObjects 15 }
+
+tensaodeentradamaximapartebaixa16 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_de_entrada_maxima_parte_baixa."
+    ::= { nhssnmpmibObjects 16 }
+
+vacinrmsmax17 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for VACINRMSMAX."
+    ::= { nhssnmpmibObjects 17 }
+
+tensaodesaidarmspartealta18 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_de_saida_rms_parte_alta."
+    ::= { nhssnmpmibObjects 18 }
+
+tensaodesaidarmspartebaixa19 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_de_saida_rms_parte_baixa."
+    ::= { nhssnmpmibObjects 19 }
+
+vacoutrms20 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for VACOUTRMS."
+    ::= { nhssnmpmibObjects 20 }
+
+temperaturapartealta21 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for temperatura_parte_alta."
+    ::= { nhssnmpmibObjects 21 }
+
+temperaturapartebaixa22 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for temperatura_parte_baixa."
+    ::= { nhssnmpmibObjects 22 }
+
+tempmed23 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for TEMPMED."
+    ::= { nhssnmpmibObjects 23 }
+
+icarregrms24 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for ICARREGRMS."
+    ::= { nhssnmpmibObjects 24 }
+
+potenciacarregador25 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for potencia_carregador."
+    ::= { nhssnmpmibObjects 25 }
+
+status26 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for status."
+    ::= { nhssnmpmibObjects 26 }
+
+arraybitsstatus027 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_0."
+    ::= { nhssnmpmibObjects 27 1 }
+
+arraybitsstatus128 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_1."
+    ::= { nhssnmpmibObjects 27 2 }
+
+arraybitsstatus229 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_2."
+    ::= { nhssnmpmibObjects 27 3 }
+
+arraybitsstatus330 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_3."
+    ::= { nhssnmpmibObjects 27 4 }
+
+arraybitsstatus431 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_4."
+    ::= { nhssnmpmibObjects 27 5 }
+
+arraybitsstatus532 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_5."
+    ::= { nhssnmpmibObjects 27 6 }
+
+arraybitsstatus633 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_6."
+    ::= { nhssnmpmibObjects 27 7 }
+
+arraybitsstatus734 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_7."
+    ::= { nhssnmpmibObjects 27 8 }
+
+carregadorativo35 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for carregador_ativo."
+    ::= { nhssnmpmibObjects 28 1 }
+
+bypassativo36 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for bypass_ativo."
+    ::= { nhssnmpmibObjects 28 2 }
+
+saidaem220v37 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for saida_em_220_V."
+    ::= { nhssnmpmibObjects 28 3 }
+
+entradaem220v38 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for entrada_em_220_V."
+    ::= { nhssnmpmibObjects 28 4 }
+
+falharapidadarede39 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for falha_rapida_da_rede."
+    ::= { nhssnmpmibObjects 28 5 }
+
+falhadarede40 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for falha_da_rede."
+    ::= { nhssnmpmibObjects 28 6 }
+
+bateriabaixa41 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for bateria_baixa."
+    ::= { nhssnmpmibObjects 28 7 }
+
+modobateria42 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for modo_bateria."
+    ::= { nhssnmpmibObjects 28 8 }
+
+checksum43 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for checksum."
+    ::= { nhssnmpmibObjects 29 }
+
+checksumcalculado44 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for checksum_calculado."
+    ::= { nhssnmpmibObjects 30 }
+
+checksumok45 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for checksum_OK."
+    ::= { nhssnmpmibObjects 31 }
+
+tempoleitura46 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tempoleitura."
+    ::= { nhssnmpmibObjects 32 1 }
+
+comprimento47 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for comprimento."
+    ::= { nhssnmpmibObjects 32 2 }
+
+tipopacote48 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tipo_pacote."
+    ::= { nhssnmpmibObjects 32 3 }
+
+serial49 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for serial."
+    ::= { nhssnmpmibObjects 32 4 }
+
+modelo50 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for modelo."
+    ::= { nhssnmpmibObjects 32 5 }
+
+versaodohardware51 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for versao_do_hardware."
+    ::= { nhssnmpmibObjects 32 6 }
+
+versaodosoftware52 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for versao_do_software."
+    ::= { nhssnmpmibObjects 32 7 }
+
+configuracao53 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for configuracao."
+    ::= { nhssnmpmibObjects 32 8 }
+
+arraybitsconfiguracao054 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_configuracao_0."
+    ::= { nhssnmpmibObjects 32 9 1 }
+
+arraybitsconfiguracao155 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_configuracao_1."
+    ::= { nhssnmpmibObjects 32 9 2 }
+
+arraybitsconfiguracao256 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_configuracao_2."
+    ::= { nhssnmpmibObjects 32 9 3 }
+
+arraybitsconfiguracao357 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_configuracao_3."
+    ::= { nhssnmpmibObjects 32 9 4 }
+
+arraybitsconfiguracao458 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_configuracao_4."
+    ::= { nhssnmpmibObjects 32 9 5 }
+
+arraybitsconfiguracao559 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_configuracao_5."
+    ::= { nhssnmpmibObjects 32 9 6 }
+
+arraybitsconfiguracao660 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_configuracao_6."
+    ::= { nhssnmpmibObjects 32 9 7 }
+
+arraybitsconfiguracao761 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_configuracao_7."
+    ::= { nhssnmpmibObjects 32 9 8 }
+
+modooem62 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for modo_oem."
+    ::= { nhssnmpmibObjects 32 10 1 }
+
+buzzerinativo63 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for buzzer_inativo."
+    ::= { nhssnmpmibObjects 32 10 2 }
+
+potmindesativada64 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for potmin_desativada."
+    ::= { nhssnmpmibObjects 32 10 3 }
+
+rearmeativado65 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for rearme_ativado."
+    ::= { nhssnmpmibObjects 32 10 4 }
+
+bootloaderativado66 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for bootloader_ativado."
+    ::= { nhssnmpmibObjects 32 10 5 }
+
+alarmertcativado67 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for alarme_rtc_ativado."
+    ::= { nhssnmpmibObjects 32 10 6 }
+
+numerodebaterias68 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for numero_de_baterias."
+    ::= { nhssnmpmibObjects 32 11 }
+
+subtensaoem120v69 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for subtensao_em_120_V."
+    ::= { nhssnmpmibObjects 32 12 }
+
+sobretensaoem120v70 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for sobretensao_em_120_V."
+    ::= { nhssnmpmibObjects 32 13 }
+
+subtensaoem220v71 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for subtensao_em_220_V."
+    ::= { nhssnmpmibObjects 32 14 }
+
+sobretensaoem220v72 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for sobretensao_em_220_V."
+    ::= { nhssnmpmibObjects 32 15 }
+
+tensaodesaida120v73 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_de_saida_120_V."
+    ::= { nhssnmpmibObjects 32 16 }
+
+tensaodesaida220v74 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_de_saida_220_V."
+    ::= { nhssnmpmibObjects 32 17 }
+
+status75 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for status."
+    ::= { nhssnmpmibObjects 32 18 }
+
+arraybitsstatus076 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_0."
+    ::= { nhssnmpmibObjects 32 19 1 }
+
+arraybitsstatus177 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_1."
+    ::= { nhssnmpmibObjects 32 19 2 }
+
+arraybitsstatus278 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_2."
+    ::= { nhssnmpmibObjects 32 19 3 }
+
+arraybitsstatus379 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_3."
+    ::= { nhssnmpmibObjects 32 19 4 }
+
+arraybitsstatus480 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_4."
+    ::= { nhssnmpmibObjects 32 19 5 }
+
+arraybitsstatus581 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_5."
+    ::= { nhssnmpmibObjects 32 19 6 }
+
+arraybitsstatus682 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_6."
+    ::= { nhssnmpmibObjects 32 19 7 }
+
+arraybitsstatus783 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for arraybits_status_7."
+    ::= { nhssnmpmibObjects 32 19 8 }
+
+entradaem220v84 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for entrada_em_220_V."
+    ::= { nhssnmpmibObjects 32 20 1 }
+
+saidaem220v85 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for saida_em_220_V."
+    ::= { nhssnmpmibObjects 32 20 2 }
+
+bateriaselada86 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for bateria_selada."
+    ::= { nhssnmpmibObjects 32 20 3 }
+
+mostrartensaodesaida87 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for mostrar_tensao_de_saida."
+    ::= { nhssnmpmibObjects 32 20 4 }
+
+mostrartemperatura88 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for mostrar_temperatura."
+    ::= { nhssnmpmibObjects 32 20 5 }
+
+mostrarcorrentedocarregador89 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for mostrar_corrente_do_carregador."
+    ::= { nhssnmpmibObjects 32 20 6 }
+
+correntedocarregador90 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for corrente_do_carregador."
+    ::= { nhssnmpmibObjects 32 21 }
+
+checksumcalculado91 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for checksum_calculado."
+    ::= { nhssnmpmibObjects 32 22 }
+
+checksum92 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for checksum."
+    ::= { nhssnmpmibObjects 32 23 }
+
+checksumok93 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for checksum_OK."
+    ::= { nhssnmpmibObjects 32 24 }
+
+inteiro94 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 25 1 }
+
+caractere95 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 25 2 }
+
+inteiro96 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 26 1 }
+
+caractere97 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 26 2 }
+
+inteiro98 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 27 1 }
+
+caractere99 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 27 2 }
+
+inteiro100 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 28 1 }
+
+caractere101 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 28 2 }
+
+inteiro102 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 29 1 }
+
+caractere103 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 29 2 }
+
+inteiro104 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 30 1 }
+
+caractere105 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 30 2 }
+
+inteiro106 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 31 1 }
+
+caractere107 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 31 2 }
+
+inteiro108 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 32 1 }
+
+caractere109 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 32 2 }
+
+inteiro110 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 33 1 }
+
+caractere111 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 33 2 }
+
+inteiro112 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 34 1 }
+
+caractere113 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 34 2 }
+
+inteiro114 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 35 1 }
+
+caractere115 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 35 2 }
+
+inteiro116 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 36 1 }
+
+caractere117 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 36 2 }
+
+inteiro118 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 37 1 }
+
+caractere119 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 37 2 }
+
+inteiro120 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 38 1 }
+
+caractere121 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 38 2 }
+
+inteiro122 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 39 1 }
+
+caractere123 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 39 2 }
+
+inteiro124 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for inteiro."
+    ::= { nhssnmpmibObjects 32 40 1 }
+
+caractere125 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for caractere."
+    ::= { nhssnmpmibObjects 32 40 2 }
+
+ano126 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for ano."
+    ::= { nhssnmpmibObjects 32 41 }
+
+mes127 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for mes."
+    ::= { nhssnmpmibObjects 32 42 }
+
+diadasemana128 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for dia_da_semana."
+    ::= { nhssnmpmibObjects 32 43 }
+
+dia129 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for dia."
+    ::= { nhssnmpmibObjects 32 44 }
+
+hora130 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for hora."
+    ::= { nhssnmpmibObjects 32 45 }
+
+minuto131 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for minuto."
+    ::= { nhssnmpmibObjects 32 46 }
+
+segundo132 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for segundo."
+    ::= { nhssnmpmibObjects 32 47 }
+
+alarmemes133 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for alarme_mes."
+    ::= { nhssnmpmibObjects 32 48 }
+
+alarmediadasemana134 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for alarme_dia_da_semana."
+    ::= { nhssnmpmibObjects 32 49 }
+
+alarmedia135 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for alarme_dia."
+    ::= { nhssnmpmibObjects 32 50 }
+
+alarmehora136 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for alarme_hora."
+    ::= { nhssnmpmibObjects 32 51 }
+
+alarmeminuto137 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for alarme_minuto."
+    ::= { nhssnmpmibObjects 32 52 }
+
+alarmesegundo138 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for alarme_segundo."
+    ::= { nhssnmpmibObjects 32 53 }
+
+nome139 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for nome."
+    ::= { nhssnmpmibObjects 33 }
+
+ultimaleitura140 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for ultimaleitura."
+    ::= { nhssnmpmibObjects 34 }
+
+ultimaleiturafmt141 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for ultimaleitura_fmt."
+    ::= { nhssnmpmibObjects 35 }
+
+descricaomodelo142 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for descricaomodelo."
+    ::= { nhssnmpmibObjects 36 }
+
+potencianominal143 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for potencia_nominal."
+    ::= { nhssnmpmibObjects 37 }
+
+potenciaaparente144 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for potencia_aparente."
+    ::= { nhssnmpmibObjects 38 }
+
+fatorconversao145 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for fator_conversao."
+    ::= { nhssnmpmibObjects 39 }
+
+numerobaterias146 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for numero_baterias."
+    ::= { nhssnmpmibObjects 40 }
+
+ah147 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for ah."
+    ::= { nhssnmpmibObjects 41 }
+
+tensaobateria148 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_bateria."
+    ::= { nhssnmpmibObjects 42 }
+
+potencianominalatual149 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for potencia_nominal_atual."
+    ::= { nhssnmpmibObjects 43 }
+
+potenciaaparenteatual150 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for potencia_aparente_atual."
+    ::= { nhssnmpmibObjects 44 }
+
+amperagemsaida151 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for amperagem_saida."
+    ::= { nhssnmpmibObjects 45 }
+
+autonomia152 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for autonomia."
+    ::= { nhssnmpmibObjects 46 }
+
+tensaosaida153 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for tensao_saida."
+    ::= { nhssnmpmibObjects 47 }
+
+sobretensao154 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for sobretensao."
+    ::= { nhssnmpmibObjects 48 }
+
+subtensao155 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for subtensao."
+    ::= { nhssnmpmibObjects 49 }
+
+eficiencia156 OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for eficiencia."
+    ::= { nhssnmpmibObjects 50 }
+
+nhssnmpmibConformance OBJECT IDENTIFIER ::= { nhssnmpmib 2 }
+
+nhssnmpmibGroup OBJECT-GROUP
+    OBJECTS { tempoleitura1, comprimento2, tipopacote3, tensaodeentradarmspartealta4, tensaodeentradarmspartebaixa5, vacinrms6, tensaobateriapartealta7, tensaobateriapartebaixa8, vdcmed9, tensaoatualbateria10, potrms11, tensaodeentradaminimapartealta12, tensaodeentradaminimapartebaixa13, vacinrmsmin14, tensaodeentradamaximapartealta15, tensaodeentradamaximapartebaixa16, vacinrmsmax17, tensaodesaidarmspartealta18, tensaodesaidarmspartebaixa19, vacoutrms20, temperaturapartealta21, temperaturapartebaixa22, tempmed23, icarregrms24, potenciacarregador25, status26, arraybitsstatus027, arraybitsstatus128, arraybitsstatus229, arraybitsstatus330, arraybitsstatus431, arraybitsstatus532, arraybitsstatus633, arraybitsstatus734, carregadorativo35, bypassativo36, saidaem220v37, entradaem220v38, falharapidadarede39, falhadarede40, bateriabaixa41, modobateria42, checksum43, checksumcalculado44, checksumok45, tempoleitura46, comprimento47, tipopacote48, serial49, modelo50, versaodohardware51, versaodosoftware52, configuracao53, arraybitsconfiguracao054, arraybitsconfiguracao155, arraybitsconfiguracao256, arraybitsconfiguracao357, arraybitsconfiguracao458, arraybitsconfiguracao559, arraybitsconfiguracao660, arraybitsconfiguracao761, modooem62, buzzerinativo63, potmindesativada64, rearmeativado65, bootloaderativado66, alarmertcativado67, numerodebaterias68, subtensaoem120v69, sobretensaoem120v70, subtensaoem220v71, sobretensaoem220v72, tensaodesaida120v73, tensaodesaida220v74, status75, arraybitsstatus076, arraybitsstatus177, arraybitsstatus278, arraybitsstatus379, arraybitsstatus480, arraybitsstatus581, arraybitsstatus682, arraybitsstatus783, entradaem220v84, saidaem220v85, bateriaselada86, mostrartensaodesaida87, mostrartemperatura88, mostrarcorrentedocarregador89, correntedocarregador90, checksumcalculado91, checksum92, checksumok93, inteiro94, caractere95, inteiro96, caractere97, inteiro98, caractere99, inteiro100, caractere101, inteiro102, caractere103, inteiro104, caractere105, inteiro106, caractere107, inteiro108, caractere109, inteiro110, caractere111, inteiro112, caractere113, inteiro114, caractere115, inteiro116, caractere117, inteiro118, caractere119, inteiro120, caractere121, inteiro122, caractere123, inteiro124, caractere125, ano126, mes127, diadasemana128, dia129, hora130, minuto131, segundo132, alarmemes133, alarmediadasemana134, alarmedia135, alarmehora136, alarmeminuto137, alarmesegundo138, nome139, ultimaleitura140, ultimaleiturafmt141, descricaomodelo142, potencianominal143, potenciaaparente144, fatorconversao145, numerobaterias146, ah147, tensaobateria148, potencianominalatual149, potenciaaparenteatual150, amperagemsaida151, autonomia152, tensaosaida153, sobretensao154, subtensao155, eficiencia156 }
+    STATUS  current
+    DESCRIPTION
+        "Grupo de conformidade para todos os objetos da MIB."
+    ::= { nhssnmpmibConformance 1 }
+
+END
