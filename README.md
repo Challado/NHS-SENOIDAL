@@ -21,6 +21,7 @@ OBSERVAÇÃO IMPORTANTE: Esse projeto está escrito, no momento, para ambientes 
 
 ### Funcionalidades
 1) Integração com o NUT.
+   
    O nut (https://github.com/networkupstools/nut) é um projeto já bastante robusto e confiável para monitoramento e integração de sistemas de monitoramento de unidades UPS (mais comumente conhecido como "NOBREAK"). Com este script e o uso do driver DUMMY do NUT, é possível monitorar de forma bastante precisa seu equipamento NHS, tendo uma gama enorme de tipos de alerta e de automações as quais o NHS CONTROL não propicia.
 
   Por falar em NUT, eu escrevi um driver que está integrado diretamente às novas versões do NUT chamado nhs_ser.c. Caso você prefira instalar o NUT puro, somente com o driver NHS, isso também é possível apenas compilando as últimas versões do software. 
@@ -38,16 +39,20 @@ OBSERVAÇÃO IMPORTANTE: Esse projeto está escrito, no momento, para ambientes 
         desc = Meu nobreak NHS
        ```
 
-3) Integração MQTT
+2) Integração MQTT
+   
    Envie as informações via MQTT para seu broker favorito, para tratar as mesmas da melhor forma, inclusive possibilitando seu uso no GRAFANA. Os dados são enviados em formato JSON para melhor tratamento e compatibilidade.
 
-4) Integração com Banco de dados
+3) Integração com Banco de dados
+   
    Existe um código embrionário dentro do arquivo de funções para a inserção das informações de monitoramento no seu banco de dados preferido
 
-5) Arquivo JSON
+4) Arquivo JSON
+
    Este script possibilia o salvamento das informações obtidas pelo seu equipamento NHS num arquivo json para que você possa implementar você mesmo seus recursos de monitoramento personalizados, se assim preferir. O arquivo estará localizado no diretório /run/nhs/nhs.json
    
-4) Integração com SNMP
+5) Integração com SNMP
+   
    Através deste software é possivel, através de uma MIB própria, monitorar alguns aspectos do seu nobreak NHS. Este software não envia traps snmp (está no nosso TODO), mas ainda assim é possível obter várias informações do equipamento.
    IMPORTANTE: as informações obtidas por este script dependem de você habilitar corretamente a geração do arquivo JSON para a conversão dos dados entre os formatos. Lembre-se de HABILITAR a geração de arquivos JSON no script principal para que esta funcionalidade seja habilitada a contento, caso contrário você não conseguirá obter informações do equipamento.
    
@@ -62,7 +67,6 @@ OBSERVAÇÃO IMPORTANTE: Esse projeto está escrito, no momento, para ambientes 
     -- Se você executar este script em linha de comando, passando o parâmetro geramib para o mesmo, será gerado um arquivo .mib chamado nhs-snmp-mib.txt no diretório atual. O mesmo pode ser utilizado em sistemas como o DUDE para melhor monitoria do seu equipamento
 
 ### TO-DO
-- Correta geração do arquivo MIB
 - Correções diversas no código.
 
    
