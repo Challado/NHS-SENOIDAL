@@ -20,6 +20,7 @@ try:
     i = 0
     interacoes = 0
     temposleep = 1
+    mqttenviado = config.mqtt_interval
     lastdp = time.time()
     pkt = None
     pkt_info = None
@@ -125,9 +126,12 @@ try:
                                     if (config.ativaMQTT):
                                         # Para nao sobrecarregar o mqtt, eh bom enviar os dados em uma frequencia menor
                                         envios = (i % config.mqtt_interval)
-                                        if (envios == 0):
-                                            slog(f"Enviando pacote para MQTT. Intervalo de envio de pacotes: {config.mqtt_interval}. Enviando pacote {i}. Resultado: {envios}.")
+                                        if (mqttenviado >= config.mqtt_interval):
+                                            slog(f"Enviando pacote para MQTT. Intervalo de envio de pacotes: {config.mqtt_interval}. Enviando pacote {i}.")                                                 ")
                                             mqtt(pkt,config.nome,subtopico=config.nome)
+                                            mqttenviado = 0
+                                        else:
+                                            mqttenviado = mqttenviado + 1
                                     if (config.ativaBD):
                                         bd(pkt)
                     dadoswaiting = ser.in_waiting
