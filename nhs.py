@@ -28,7 +28,7 @@ try:
     while (True):
         # Verifica se houve o timeout de leitura. Caso tenha, zera todos os dados
         lastread = time.time()
-        if (lastread - lastp > config.timeout):
+        if (lastread - lastdp > config.timeout):
             slog("Timeout de leitura. Ultima leitura a %d segundos atras. Zerando contadores..." % (config.timeout))
             if (config.ativaNUT):
                 nut(None)
