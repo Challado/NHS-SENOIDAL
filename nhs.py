@@ -29,7 +29,7 @@ try:
         # Verifica se houve o timeout de leitura. Caso tenha, zera todos os dados
         lastread = time.time() - lastdp
         if (lastread > config.timeout):
-            slog("Timeout de leitura. Ultima leitura a %d segundos atras, em %s. Zerando contadores..." % (lastread,time.strftime("%d/%m/%Y %H:%M:%S",time.localtime(lastdp)))
+            slog("Timeout de leitura. Ultima leitura a %d segundos atras, em %s. Zerando contadores..." % (lastread,time.strftime("%d/%m/%Y %H:%M:%S",time.localtime(lastdp))))
             if (config.ativaNUT):
                 nut(None)
             if (config.ativaJSON):
