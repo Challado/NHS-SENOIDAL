@@ -19,22 +19,22 @@ try:
     ser = None
     i = 0
     interacoes = 0
-    temposleep =1
-    lastdp = None
+    temposleep = 1
+    lastdp = time.time()
     pkt = None
     pkt_info = None
     # Abre a porta Serial
     ser = serial.Serial(config.device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True, exclusive=True)
     while (True):
+        # Verifica se houve o timeout de leitura. Caso tenha, zera todos os dados
+        if (time.time() - lastp > config.timeout):
+            if (config.ativaNUT):
+                nut(None)
+            if (config.ativaJSON):
+                js(None)
         if (ser.isOpen() == False):
             ser = serial.Serial(config.device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True, exclusive=True)
             slog("Serial estava fechada. Reabrindo...")
-
-            if (config.ativaJSON):
-                js(None)
-            if (config.ativaNUT):
-                # Precisa escrever NADA no nut pois esta desconectado
-                nut(None)
         else:
             dadoswaiting = ser.in_waiting
             if (dadoswaiting > 0):

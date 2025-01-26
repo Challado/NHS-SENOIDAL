@@ -25,6 +25,8 @@ ah = 9
 tensao_bateria = 12
 # Caminho do dispositivo
 device = "/dev/ttyACM0"
+# tempo sem leitura para considerar que nao temos comunicacao com o nobreak
+timeout = 10
 # Caminho do arquivo de log
 arquivolog = "/var/log/nhs.log"
 # Arquivo que sera monitorado pelo NUT
