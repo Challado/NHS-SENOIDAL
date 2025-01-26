@@ -27,9 +27,9 @@ try:
     ser = serial.Serial(config.device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True, exclusive=True)
     while (True):
         # Verifica se houve o timeout de leitura. Caso tenha, zera todos os dados
-        lastread = time.time()
-        if (lastread - lastdp > config.timeout):
-            slog("Timeout de leitura. Ultima leitura a %d segundos atras. Zerando contadores..." % (config.timeout))
+        lastread = time.time() - lastdp
+        if (lastread > config.timeout):
+            slog("Timeout de leitura. Ultima leitura a %d segundos atras, em %s. Zerando contadores..." % (lastread,time.strftime("%d/%m/%Y %H:%M:%S",time.localtime(lastdp)))
             if (config.ativaNUT):
                 nut(None)
             if (config.ativaJSON):
@@ -49,7 +49,7 @@ try:
                         if (lastdp):
                             tempodecorrido = time.time() - lastdp
                         pkt = tratar_datapacket(dp,tempodecorrido,pkt_infonobreak = pkt_info)
-                        lastp = time.time()
+                        lastdp = time.time()
                         if ((pkt) and (pkt["checksum_OK"])):
                             if (pkt["tipo_pacote"] == 'S'):
                                 # Carrega com as informacoes do nobreak
