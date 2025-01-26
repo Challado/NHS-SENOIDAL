@@ -27,7 +27,9 @@ try:
     ser = serial.Serial(config.device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True, exclusive=True)
     while (True):
         # Verifica se houve o timeout de leitura. Caso tenha, zera todos os dados
-        if (time.time() - lastp > config.timeout):
+        lastread = time.time()
+        if (lastread - lastp > config.timeout):
+            slog("Timeout de leitura. Ultima leitura a %d segundos atras. Zerando contadores..." % (config.timeout))
             if (config.ativaNUT):
                 nut(None)
             if (config.ativaJSON):
