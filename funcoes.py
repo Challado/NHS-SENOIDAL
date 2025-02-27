@@ -103,9 +103,10 @@ upsinfo = {
 
 # Funcao que converte o numero de segundos em horas, minutos e segundos
 def segundos_para_tempo(segundos):
-    horas = segundos // 3600
-    minutos = (segundos % 3600) // 60
-    segundos = segundos % 60
+    segundos = round(segundos)
+    horas = round(segundos // 3600)
+    minutos = round((segundos % 3600) // 60)
+    segundos = round(segundos % 60)
     # Retorna uma string formatada com o tempo em horas, minutos e segundos
     return f'{horas:02d}:{minutos:02d}:{segundos:02d}'
 
