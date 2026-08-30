@@ -19,7 +19,10 @@ try:
     ser = None
     i = 0
     interacoes = 0
-    temposleep = 1
+    temposleep = 0
+    tempoenvio = None
+    tempoenvioanterior = None
+    segundosaguardarenviopkthardware = 0
     mqttenviado = config.mqtt_interval
     lastdp = time.time()
     pkt = None
@@ -35,6 +38,8 @@ try:
                 nut(None)
             if (config.ativaJSON):
                 js(None)
+            # Zero temposleep. Pode estar muito alto
+            temposleep = 0
         if (ser.isOpen() == False):
             ser = serial.Serial(config.device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True, exclusive=True)
             slog("Serial estava fechada. Reabrindo...")
@@ -133,17 +138,25 @@ try:
                                             mqttenviado = mqttenviado + 1
                                     if (config.ativaBD):
                                         bd(pkt)
+                    else:
+                        # Aumento o temposleep aqui para algo que case com o tempo de envio das informacoes do dispositivo
+                        temposleep = temposleep + 0.1
                     dadoswaiting = ser.in_waiting
             if (pkt_info == None):
                 # Ainda nao foi inicializado o sistema e/ou nao recebi o pacote de hardware. Tentando enviar para receber os dados
-                slog("Pacote de Hardware nao foi recebido ainda")
-                if (send_extended < 4):
-                    enviapacote(ser,1)
-                    send_extended = send_extended + 1
-                else:
-                    enviapacote(ser,random.randint(0,1))
-                slog(f"Tempo Insuficiente: incrementando o tempo de leitura. Tempo atual {temposleep} s.")
-                temposleep = temposleep + 0.1
+                if (tempoenvio):
+                    tempoenvioanterior = tempoenvio
+                    slog(f"Pacote de Hardware nao foi recebido ainda. Ultimo envio em {tempoenvio.strftime('%d/%m/%Y %H:%M:%S')}")
+                    segundosentre = tempoenvio - tempoenvioanterior
+                    if (segundosentre > segundosaguardarenviopkthardware):
+                        if (send_extended < 4):
+                            enviapacote(ser,1)
+                            send_extended = send_extended + 1
+                        else:
+                            enviapacote(ser,random.randint(0,1))
+                        tempoenvio = time.time()
+                        slog(f"Tempo Insuficiente: incrementando o tempo de leitura. Tempo atual {segundosaguardarenviopkthardware} s.")
+                        segundosaguardarenviopkthardware = segundosaguardarenviopkthardware + 0.01
         time.sleep(temposleep)
         i = i + 1
 except Exception as inst:
