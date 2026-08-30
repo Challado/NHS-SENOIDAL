@@ -170,7 +170,7 @@ try:
                                 send_extended = send_extended + 1
                             else:
                                 enviapacote(ser,random.randint(0,2))
-                            slog(f"Pacote de hardware ainda nao recebido. Enviando string de inicializacao a cada {pacotesenvio} pacotes.")
+                            slog(f"Pacote de hardware ainda nao recebido. Enviando string de inicializacao a cada {config.pacotesenvio} pacotes.")
                     dadoswaiting = ser.in_waiting
         time.sleep(temposleep)
         i = i + 1
