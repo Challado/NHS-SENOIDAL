@@ -792,7 +792,9 @@ def nut(pkt):
         #|===============================================================================
         #| Name                         | Description                         | Example value
         #| battery.charge               | Battery charge (percent)            | 100.0
-        carga = (pkt["tensao_atual_bateria"] * 100) / pkt["tensao_bateria"] 
+        carga = 0
+        if (pkt["tensao_bateria"] > 0):
+            carga = (pkt["tensao_atual_bateria"] * 100) / pkt["tensao_bateria"] 
         if (carga > 100):
             carga = 100
         arq.write("battery.charge: %04.2f\r\n" % carga)
@@ -824,7 +826,8 @@ def nut(pkt):
         #| battery.capacity.nominal     | Nominal battery capacity (Ah)       | 8.0
         arq.write("battery.capacity.nominal: %03.3d\r\n" % pkt["ah"])
         #| battery.current              | Battery current (A)                 | 1.19
-        arq.write("battery.current: %04.2f\r\n" % (pkt["amperagem_saida"] / pkt["numero_baterias"]))
+        if (pkt["numero_baterias"] > 0):
+            arq.write("battery.current: %04.2f\r\n" % (pkt["amperagem_saida"] / pkt["numero_baterias"]))
         #| battery.current.total        | Total battery current (A)           | 1.19
         arq.write("battery.current.total: %04.2f\r\n" % pkt["amperagem_saida"])
         #| battery.status               | Health status of the battery
