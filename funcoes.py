@@ -14,6 +14,8 @@ import config
 
 datapacket = []
 datapacketstart = False
+datapacketsize = 0
+
 # Define some variables
 mqttcli = None
 mqtt_connected = False
@@ -213,7 +215,6 @@ def arraybinario(data):
             i -= 1
     return invertearray(result)
 
-
 # Função para imprimir os bits de um byte
 def imprimir_bits(byte):
     return f'{byte:08b}'
@@ -362,7 +363,6 @@ def tratar_datapacket(pacote,tempoleitura,DebugTela = False,pkt_infonobreak = No
             resposta["status"] = convertebyte(pacote[17])
             resposta["arraybits_status"] = arraybinario(pacote[17])
             
-            
             status = resposta["status"]
             valores = {}
             valores["carregador_ativo"] = 'S' if bool(status & 0b10000000) else 'N'
@@ -388,15 +388,24 @@ def tratar_datapacket(pacote,tempoleitura,DebugTela = False,pkt_infonobreak = No
 def criadatapacket(dado):
     global datapacket
     global datapacketstart
+    global datapacketsize 
+    global datapacketactualsize
+
     retorno = None
     
-    dado = dado
     if (dado ==  b'\xff'):
         # Inicio do pacote
         datapacketstart = True
+        datapacketsize = 0
+
     if (datapacketstart):
         datapacket.append(dado)
-        if (dado == b'\xfe'):
+        if (len(datapacket) == 2):
+            # Segundo pacote eh o comprimento. O valor de retorno é hexa
+            datapacketsize = convertebyte(dado)
+        
+        # Tenho que ler enquanto não chegar ao tamanho do pacote e não chegar no fim da transmissão que é 0xFE
+        if ((len(datapacket) == datapacketsize) and (dado == b'\xfe')):
             # Fim da transmissao
             hex = retornahexa(datapacket)
             slog(f"Datapacket recebido: {datapacket} -- {hex}. Tamanho {len(datapacket)}.")
