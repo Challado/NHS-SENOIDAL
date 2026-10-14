@@ -5,46 +5,16 @@ import os
 import json
 import pprint
 import random
+import config
 from funcoes import *
 
 # Variaveis de controle
-emumode = False
 pkt_info = None
 send_extended = 0
 
-# Grava arquivo para o NUT
-ativaNUT = True
-# Envia MQTT
-ativaMQTT = True
-# Envia para o Banco de Dados
-ativaBD = False
-# Saida JSON
-ativaJSON = True
-
-
-# Consulte o manual do teu nobreak para fornecer as informacoes corretas
-# Eh importante que voce forneca os dados certos para que os calculos sejam fornecidos corretamente
-# Defina os dados do teu nobreak aqui
-nome = "MEUNOBREAK"
-# A descricao do modelo e a potencia em VA podem ser obtidos de uma relacao de modelos no arquivo funcoes.py, no array upsinfo. Caso nao esteja la pode colocar aqui
-descricaomodelo = "NHS LINHA SENOIDAL"
-# Potencia Nominal em VA. 
-potencia_nominal = 3000
-# Fator de conversao
-fator_conversao = 0.9
-
-# Numero de baterias. O nobreak ja tem essa informacao la dentro dele, mas voce pode ter colocado um modulo de baterias externo...
-# Se caso o valor for None entao ele ira manter os dados da bateria
-numero_baterias = None
-# Capacidade da bateria em Ah. Voce precisa saber a capacidade da bateria para calcular a autonomia
-ah = 9
-# Tensao da Bateria em Volts
-tensao_bateria = 12
-
-device = "/dev/ttyACM0"
 try:
-    if (os.path.exists("/var/log/nhs.log")):
-        os.unlink("/var/log/nhs.log")        
+    if (os.path.exists(config.arquivolog)):
+        os.unlink(config.arquivolog)        
     ser = None
     i = 0
     interacoes = 0
@@ -54,11 +24,11 @@ try:
     pkt_info = None
     while (True):
         if ((not ser) or (ser.isOpen() == False)):
-            ser = serial.Serial(device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True)
+            ser = serial.Serial(config.device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True, exclusive=True)
             slog("Serial estava fechada. Reabrindo")
-            if (ativaJSON):
+            if (config.ativaJSON):
                 js(None)
-            if (ativaNUT):
+            if (config.ativaNUT):
                 # Precisa escrever NADA no nut pois esta desconectado
                 nut(None)
         else:
@@ -72,11 +42,7 @@ try:
                         tempodecorrido = 0
                         if (lastdp):
                             tempodecorrido = time.time() - lastdp
-                        if (emumode):
-                            # Modo emulacao, manda tudo como TRUE
-                            pkt = tratar_datapacket(dp,tempodecorrido,pkt_infonobreak = pkt_info)
-                        else:
-                            pkt = tratar_datapacket(dp,tempodecorrido,pkt_infonobreak = pkt_info)
+                        pkt = tratar_datapacket(dp,tempodecorrido,pkt_infonobreak = pkt_info)
                         lastp = time.time()
                         if ((pkt) and (pkt["checksum_OK"])):
                             if (pkt["tipo_pacote"] == 'S'):
@@ -85,7 +51,7 @@ try:
                             else:
                                 if (pkt_info):
                                     # Se tem pacote de hardware, vamos em frente
-                                    pkt["nome"] = nome
+                                    pkt["nome"] = config.nome
                                     pkt["ultimaleitura"] = time.time()
                                     # Com os dados do teu nobreak, fizemos algumas mudancas no pacote de retorno
                                     # Vamos calcular por exemplo tua potencia atual do nobreak, o percentual da tua potencia atual em relacao a potencia nominal
@@ -98,22 +64,22 @@ try:
                                         pkt["descricaomodelo"] = infoups["upsdesc"]
                                         pkt["potencia_nominal"] = infoups["VA"]
                                     else:
-                                        pkt["descricaomodelo"] = descricaomodelo
-                                        pkt["potencia_nominal"] = potencia_nominal
-                                    pkt["potencia_nominal"] = potencia_nominal
+                                        pkt["descricaomodelo"] = config.descricaomodelo
+                                        pkt["potencia_nominal"] = config.potencia_nominal
+                                    pkt["potencia_nominal"] = config.potencia_nominal
                                     # Potencia Aparente - Essa vai ser a potencia em Watts que voce vai ter
-                                    pkt["potencia_aparente"] = potencia_nominal * fator_conversao
-                                    pkt["fator_conversao"] = fator_conversao
-                                    if (numero_baterias):
-                                        pkt["numero_baterias"] = numero_baterias
+                                    pkt["potencia_aparente"] = config.potencia_nominal * config.fator_conversao
+                                    pkt["fator_conversao"] = config.fator_conversao
+                                    if (config.numero_baterias):
+                                        pkt["numero_baterias"] = config.numero_baterias
                                     else:
                                         pkt["numero_baterias"] = pkt_info["numero_de_baterias"]
-                                    pkt["ah"] = ah
-                                    pkt["tensao_bateria"] = tensao_bateria
+                                    pkt["ah"] = config.ah
+                                    pkt["tensao_bateria"] = config.tensao_bateria
                                     # Calculo da potencia atual
                                     pkt["potencia_nominal_atual"] = pkt["potencia_nominal"] * (pkt["POTRMS"] / 100)
                                     pkt["potencia_aparente_atual"] =  pkt["potencia_aparente"] * (pkt["POTRMS"] / 100)
-                                    pkt["amperagem_saida"] = pkt["potencia_aparente_atual"] / tensao_bateria
+                                    pkt["amperagem_saida"] = pkt["potencia_aparente_atual"] / config.tensao_bateria
                                     # Calculo da autonomia
                                     # Calculo Basico: 
                                     # Potencia sendo consumida em Watts / Corrente da Bateria = Corrente Atual
@@ -123,7 +89,7 @@ try:
                                     # Outra conta que passaram
                                     # Duracao da Bateria = ((Ampere-Hora da Bateria * Tensão da Bateria em V * fator_conversao) / Consumo em Watts) * 3600
                                     #pkt["autonomia"] = (ah / pkt["amperagem_saida"]) * 3600
-                                    pkt["autonomia"] = ((ah * tensao_bateria * fator_conversao) / pkt["potencia_aparente_atual"]) * 3600
+                                    pkt["autonomia"] = ((config.ah * config.tensao_bateria * config.fator_conversao) / pkt["potencia_aparente_atual"]) * 3600
                                     if (pkt["valores_status"]["saida_em_220_V"] == 'S'):
                                         pkt["tensao_saida"] = pkt_info["tensao_de_saida_220_V"]
                                         pkt["sobretensao"] = pkt_info["sobretensao_em_220_V"]
@@ -137,15 +103,15 @@ try:
                                     atualizarmaximos(pkt)
                                     # Agora para frente comecamos a fazer os PROCESSAMENTOS dos pacotes
                                     #slog(pprint.pformat(pkt))
-                                    if (ativaNUT):
+                                    if (config.ativaNUT):
                                         nut(pkt)
-                                    if (ativaJSON):
+                                    if (config.ativaJSON):
                                         js(pkt)
-                                    if (ativaMQTT):
+                                    if (config.ativaMQTT):
                                         # Para nao sobrecarregar o mqtt, eh bom enviar os dados em uma frequencia menor
-                                        if (i % 4 == 0):
-                                            mqtt(pkt,nome,subtopico=nome)
-                                    if (ativaBD):
+                                        if (i % config.mqtt_interval == 0):
+                                            mqtt(pkt,config.nome,subtopico=config.nome)
+                                    if (config.ativaBD):
                                         bd(pkt)
                                 else:
                                     slog("Pacote de Hardware nao foi recebido ainda")
