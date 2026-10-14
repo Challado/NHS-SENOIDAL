@@ -1,0 +1,8 @@
+{
+  "svn_url": "file:///mnt/export/subversion/NHS-SENOIDAL/trunk",
+  "revision": 3,
+  "uuid": "b9d5718b-e967-493d-9439-afa4c62839cd",
+  "log_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<log>\n<logentry\n   revision=\"3\">\n<author>root</author>\n<date>2026-10-14T19:02:30.115451Z</date>\n<paths>\n<path\n   prop-mods=\"false\"\n   text-mods=\"true\"\n   kind=\"file\"\n   action=\"M\">/trunk/README.md</path>\n</paths>\n<msg>Update README.md\n\nSVN-Git-Bridge: NHS-SENOIDAL-3e341d2d9c-c5c1e7f4382f 7caeb257c1c8856659c617fc6a4a42da7abb8fc5\nBridge-Author: Challado &lt;lucas.bocchi@gmail.com&gt;\nBridge-Author-Date: 2024-12-23T13:49:42-03:00\nBridge-Committer: GitHub &lt;noreply@github.com&gt;\nBridge-Committer-Date: 2024-12-23T13:49:42-03:00\nFrom: Challado &lt;lucas.bocchi@gmail.com&gt;</msg>\n</logentry>\n</log>\n",
+  "properties_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<properties>\n</properties>\n",
+  "directories_and_files_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<lists>\n<list\n   path=\"file:///mnt/export/subversion/NHS-SENOIDAL/trunk\">\n<entry\n   kind=\"file\">\n<name>LICENSE</name>\n<size>35149</size>\n<commit\n   revision=\"2\">\n<author>root</author>\n<date>2026-10-14T19:02:29.268943Z</date>\n</commit>\n</entry>\n<entry\n   kind=\"file\">\n<name>README.md</name>\n<size>5439</size>\n<commit\n   revision=\"3\">\n<author>root</author>\n<date>2026-10-14T19:02:30.115451Z</date>\n</commit>\n</entry>\n</list>\n</lists>\n"
+}
