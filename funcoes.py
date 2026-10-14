@@ -155,7 +155,7 @@ def slog(s,endchr="\r\n",debug=False,lf = None):
     if (lf == None):
         lf = config.arquivolog
     arq = open(lf,"a+")
-    arq.write(time.strftime("%d/%m/%Y %H:%M:%S") + " -- " + str(s).encode('utf-8','replace').decode('utf-8','replace') + endchr)
+    arq.write(time.strftime("%d/%m/%Y %H:%M:%S") + " -- " + str(s).encode('utf-8','replace').decode('utf-8','replace').trim() + endchr)
     arq.close()
     if (debug):
         print(s)
@@ -206,7 +206,7 @@ def enviapacote(ser,tipopacote = 0):
         ser.write(bytearray(pacote_inicializacao))
         ser.flush()
         ser.reset_input_buffer()
-    slog(f"Pacote enviado: {pacote_inicializacao} {retornahexa(pacote_inicializacao)}")
+    slog(f"Pacote enviado: {pacote_inicializacao} {retornahexa(pacote_inicializacao)}.")
     
 def arraybinario(data):
     """Turn the string data, into a list of bits (1, 0)'s"""
@@ -414,7 +414,7 @@ def criadatapacket(dado):
         if (dado == b'\xfe'):
             # Fim da transmissao
             hex = retornahexa(datapacket)
-            slog(f"\r\nDatapacket recebido: {datapacket} -- {hex}. Tamanho {len(datapacket)}.\r\n")
+            slog(f"Datapacket recebido: {datapacket} -- {hex}. Tamanho {len(datapacket)}.")
             retorno = datapacket
             datapacket = []
             datapacketstart = False
