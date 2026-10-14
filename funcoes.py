@@ -147,15 +147,25 @@ def slog(s,endchr="\r\n",debug=False,lf = None):
     if (debug):
         print(s)
 
-def convertebyte(b,tipo = "big",doFloat = False):
+#def convertebyte(b,tipo = "big",doFloat = False):
+#    resultado = b
+#    if (isinstance(b,bytes)):
+#        resultado = int.from_bytes(b,tipo)
+#        if (doFloat):
+#            if (tipo == "big"):
+#                resultado = struct.unpack('>f', resultado.to_bytes(4, byteorder=tipo))[0]
+#            else:
+#                resultado = struct.unpack('<f', resultado.to_bytes(4, byteorder=tipo))[0]
+#    return resultado
+
+def convertebyte(b, tipo="big", doFloat=False):
     resultado = b
-    if (isinstance(b,bytes)):
-        resultado = int.from_bytes(b,tipo)
-        if (doFloat):
-            if (tipo == "big"):
-                resultado = struct.unpack('>f', resultado.to_bytes(4, byteorder=tipo))[0]
-            else:
-                resultado = struct.unpack('<f', resultado.to_bytes(4, byteorder=tipo))[0]
+    if isinstance(b, bytes):
+        if doFloat:
+            fmt = '>f' if tipo == "big" else '<f'
+            resultado = struct.unpack(fmt, b)[0]
+        else:
+            resultado = int.from_bytes(b, tipo)
     return resultado
     
 def retornahexa(array):
@@ -385,7 +395,7 @@ def tratar_datapacket(pacote,tempoleitura,DebugTela = False,pkt_infonobreak = No
         pprint.pprint(resposta)
     return resposta
 
-def criadatapacket(dado):
+ef criadatapacket(dado):
     global datapacket
     global datapacketstart
     global datapacketsize 
@@ -396,20 +406,25 @@ def criadatapacket(dado):
         # Inicio do pacote
         datapacketstart = True
         datapacketsize = 0
+        datapacket = []
+        slog(f"Inicio do Datapacket. Marcado start e zerado tamanho do pacote. Dado recebido no pacote {dado}")
 
     if (datapacketstart):
         datapacket.append(dado)
         if (len(datapacket) == 2):
             # Segundo pacote eh o comprimento. O valor de retorno é hexa
-            datapacketsize = convertebyte(dado)
-            slog(f"Comprimento do pacote definido para: {datapacketsize}")
-        
+            datapacketsize = int.from_bytes(dado, byteorder='big')
+            slog(f"Comprimento do pacote definido para: {datapacketsize}. Datapacket atual {datapacket}.")
+        # Se por acaso chegou no 0xFE da uma olhada
+        if (dado == b'\xfe'):
+            slog(f"Possivel final do pacote. Pacote atual {datapacket}. Tamanho atual {len(datapacket)}. Tamanho esperado {datapacketsize}")
         # Tenho que ler enquanto não chegar ao tamanho do pacote e não chegar no fim da transmissão que é 0xFE
         if ((len(datapacket) == datapacketsize) and (dado == b'\xfe')):
             # Fim da transmissao
             hex = retornahexa(datapacket)
             slog(f"Datapacket recebido: {datapacket} -- {hex}. Tamanho {len(datapacket)}.")
             retorno = datapacket
+            # Zeramos so para garantir
             datapacket = []
             datapacketstart = False
     return retorno
