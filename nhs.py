@@ -151,5 +151,10 @@ finally:
         slog("Pacote enviado e serial finalizada.")
     else:
         slog("Serial nao estava aberto. Finalizando mesmo assim.")
+    # Envia pacotes vazios para indicar fim da leitura
+    if (config.ativaNUT):
+        nut(None)
+    if (config.ativaJSON):
+        js(None)
      
         
