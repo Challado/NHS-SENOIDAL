@@ -101,30 +101,6 @@ upsinfo = {
     70: {"upsdesc": "LASER ONLINE 4000VA", "VA": 4000},
 }
 
-def getconfig(chave):
-    """
-    Lê um arquivo de configuração no formato chave=valor e retorna o valor associado à chave.
-
-    :param file_path: Caminho para o arquivo de configuração.
-    :param key: Nome da chave a ser buscada.
-    :return: Valor correspondente à chave ou None se a chave não for encontrada.
-    """
-    file_path = "config.txt"
-    retval = None
-    if (os.path.exists(file_path)):
-        with open(file_path, 'r') as file:
-            for line in file:
-                # Remove espaços e ignora linhas vazias ou comentários
-                line = line.strip()
-                if not line or line.startswith('#'):
-                    continue
-                # Divide a linha no formato chave=valor
-                if '=' in line:
-                    config_key, config_value = line.split('=', 1)
-                    if config_key.strip().upper() == chave.upper():
-                        retval = config_value.strip()
-    return retval
-
 def imprime(dados):
     adado = []
     hdado = []
@@ -155,7 +131,7 @@ def slog(s,endchr="\r\n",debug=False,lf = None):
     if (lf == None):
         lf = config.arquivolog
     arq = open(lf,"a+")
-    arq.write(time.strftime("%d/%m/%Y %H:%M:%S") + " -- " + str(s).encode('utf-8','replace').decode('utf-8','replace').trim() + endchr)
+    arq.write(time.strftime("%d/%m/%Y %H:%M:%S") + " -- " + str(s).strip().encode('utf-8','replace').decode('utf-8','replace') + endchr)
     arq.close()
     if (debug):
         print(s)
@@ -448,7 +424,7 @@ def atualizarmaximos(pkt_dados):
 def js(pkt):
     # Funcao que ira criar a saida de dados para o JSON
     # Defina aqui o caminho onde voce quer que o software guarde os dados
-    arquivo = getconfig("arquivojson")
+    arquivo = getattr(config, "arquivojson", None)
     if (arquivo == None):
         arquivo = "/run/nhs/nhs.json"
     diretorio = os.path.dirname(arquivo)
@@ -463,7 +439,7 @@ def nut(pkt):
     # Funcao que ira criar a saida de dados para o NUT
     # Defina aqui o caminho onde voce quer que o software guarde os dados
     global minmax
-    arquivo = getconfig("arquivonut")
+    arquivo = getattr(config,"arquivonut", None)
     if (arquivo == None):
         arquivo = "/run/nhs/nut.seq"
     diretorio = os.path.dirname(arquivo)
@@ -892,7 +868,7 @@ def nut(pkt):
         #|===============================================================================
     else:
         # Nobreak esta com problema
-        arq.write("ups.status: OFF\r\n")
+        arq.write("ups.status: COMMBAD\r\n")
     arq.close()
 
 # Define algumas funcoes do mqtt
