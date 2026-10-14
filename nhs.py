@@ -99,7 +99,11 @@ try:
                                     if (pkt["potencia_aparente_atual"] > 0):
                                         pkt["autonomia"] = ((config.ah * config.tensao_bateria * config.fator_conversao) / pkt["potencia_aparente_atual"]) * 3600
                                     else:
-                                        pkt["autonomia"] = ((config.ah * config.tensao_bateria * config.fator_conversao)) * 3600                                       
+                                        pkt["autonomia"] = ((config.ah * config.tensao_bateria * config.fator_conversao)) * 3600
+                                    if (pkt["valores_status"]["modo_bateria"] == 'S'):
+                                        pkt["sautonomia"] = segundos_para_tempo(pkt["autonomia"])
+                                    else:
+                                        pkt["sautonomia"] = "NOBREAK ONLINE"
                                     if (pkt["valores_status"]["saida_em_220_V"] == 'S'):
                                         pkt["tensao_saida"] = pkt_info["tensao_de_saida_220_V"]
                                         pkt["sobretensao"] = pkt_info["sobretensao_em_220_V"]
