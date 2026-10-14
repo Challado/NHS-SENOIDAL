@@ -125,7 +125,7 @@ try:
                                     if (config.ativaMQTT):
                                         # Para nao sobrecarregar o mqtt, eh bom enviar os dados em uma frequencia menor
                                         envios = (i % config.mqtt_interval)
-                                        if (envios) == 0):
+                                        if (envios == 0):
                                             slog("Enviando pacote para MQTT. Intervalo de envio de pacotes: {config.mqtt_interval}. Enviando pacote {i}. Resultado: {envios}.")
                                             mqtt(pkt,config.nome,subtopico=config.nome)
                                     if (config.ativaBD):
