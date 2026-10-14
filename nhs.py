@@ -123,7 +123,7 @@ try:
                                     if (config.ativaBD):
                                         bd(pkt)
                     dadoswaiting = ser.in_waiting
-            if (pkt_info == None)
+            if (pkt_info == None):
                 # Ainda nao foi inicializado o sistema e/ou nao recebi o pacote de hardware. Tentando enviar para receber os dados
                 slog("Pacote de Hardware nao foi recebido ainda")
                 if (send_extended < 4):
