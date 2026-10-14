@@ -53,6 +53,7 @@ try:
                                     # Se tem pacote de hardware, vamos em frente
                                     pkt["nome"] = config.nome
                                     pkt["ultimaleitura"] = time.time()
+                                    pkt["ultimaleitura_fmt"] = time.strftime("%d/%m/%Y %H:%M:%S",time.localtime(pkt["ultimaleitura"]))
                                     # Com os dados do teu nobreak, fizemos algumas mudancas no pacote de retorno
                                     # Vamos calcular por exemplo tua potencia atual do nobreak, o percentual da tua potencia atual em relacao a potencia nominal
                                     # E tambem a autonomia do nobreak
