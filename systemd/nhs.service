@@ -1,0 +1,17 @@
+[Unit]
+Description=Monitor NHS
+After=network-online.target multi-user.target
+
+[Service]
+User=root
+Type=simple
+WorkingDirectory=/usr/local/nhs
+ExecStart=/usr/bin/python3 /usr/local/nhs/nhs.py
+Restart=always
+RestartSec=5
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=nhs
+
+[Install]
+WantedBy=multi-user.target
