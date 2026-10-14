@@ -392,7 +392,6 @@ def criadatapacket(dado):
     global datapacketactualsize
 
     retorno = None
-    
     if (dado ==  b'\xff'):
         # Inicio do pacote
         datapacketstart = True
@@ -403,6 +402,7 @@ def criadatapacket(dado):
         if (len(datapacket) == 2):
             # Segundo pacote eh o comprimento. O valor de retorno é hexa
             datapacketsize = convertebyte(dado)
+            slog(f"Comprimento do pacote definido para: {datapacketsize}")
         
         # Tenho que ler enquanto não chegar ao tamanho do pacote e não chegar no fim da transmissão que é 0xFE
         if ((len(datapacket) == datapacketsize) and (dado == b'\xfe')):
