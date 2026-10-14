@@ -142,7 +142,7 @@ try:
         time.sleep(temposleep)
         i = i + 1
 except Exception as inst:
-    slog("Houve uma excecao:\r\n\r\n%s\r\n--------------\r\n%s\r\n--------------" % (inst, traceback.format_exc(sys.exc_info()[2])))       
+    slog("Houve uma excecao:\r\n\r\n%s\r\n--------------\r\n%s\r\n--------------" % (inst, traceback.format_exc()))       
 finally:
     slog("Enviando pacote de finalizacao...")
     if (ser):
