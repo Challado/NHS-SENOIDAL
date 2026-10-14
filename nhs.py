@@ -7,29 +7,35 @@ import pprint
 import random
 import config
 import traceback
+import signal
 from funcoes import *
 
 # Variaveis de controle
 pkt_info = None
 send_extended = 0
+temposleep = 0
+encerrar = False
+
+def encerrar_servico(signum, frame):
+    global encerrar
+    encerrar = True
+
+signal.signal(signal.SIGTERM, encerrar_servico)
 
 try:
     if (os.path.exists(config.arquivolog)):
         os.unlink(config.arquivolog)        
     ser = None
     i = 0
-    interacoes = 0
+    tempodecorrido = 0
     temposleep = 0
-    tempoenvio = None
-    tempoenvioanterior = None
-    segundosaguardarenviopkthardware = 0
     mqttenviado = config.mqtt_interval
     lastdp = time.time()
     pkt = None
     pkt_info = None
     # Abre a porta Serial
     ser = serial.Serial(config.device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True, exclusive=True)
-    while (True):
+    while (not encerrar):
         # Verifica se houve o timeout de leitura. Caso tenha, zera todos os dados
         lastread = time.time() - lastdp
         if (lastread > config.timeout):
@@ -40,26 +46,43 @@ try:
                 js(None)
             # Zero temposleep. Pode estar muito alto
             temposleep = 0
+            if (ser.isOpen()):
+                enviapacote(ser,random.randint(0,2))
         if (ser.isOpen() == False):
             ser = serial.Serial(config.device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True, exclusive=True)
             slog("Serial estava fechada. Reabrindo...")
         else:
+            if (i == 0):
+                # Nenhuma interacao foi feita. Vou encerrar o envio de dados anteriores e inicializar novamente
+                enviapacote(ser,3)
+                time.sleep(1)
+                enviapacote(ser,4)
+                slog(f"Encerrando envio de pacotes para reiniciar comunicacao")
+                enviapacote(ser,0)
+                time.sleep(2)
+                enviapacote(ser,1)
+                time.sleep(2)
+                enviapacote(ser,2)
+                slog(f"Reinicializacao de comunicacao concluida.")
             dadoswaiting = ser.in_waiting
             if (dadoswaiting > 0):
-                while (dadoswaiting > 0):
+                while (dadoswaiting > 0 and not encerrar):
                     ch = ser.read(1)
                     dp = criadatapacket(ch)
                     if (dp):
+                        # Vejo o tempo que demorou para montar esse datapacket
                         pkt = None
                         tempodecorrido = 0
                         if (lastdp):
                             tempodecorrido = time.time() - lastdp
+                        temposleep = tempodecorrido
                         pkt = tratar_datapacket(dp,tempodecorrido,pkt_infonobreak = pkt_info)
                         lastdp = time.time()
                         if ((pkt) and (pkt["checksum_OK"])):
                             if (pkt["tipo_pacote"] == 'S'):
                                 # Carrega com as informacoes do nobreak
                                 pkt_info = pkt
+                                slog(f"Pacote de hardware recebido: {pkt_info}")
                             else:
                                 if (pkt_info):
                                     # Se tem pacote de hardware, vamos em frente
@@ -138,25 +161,17 @@ try:
                                             mqttenviado = mqttenviado + 1
                                     if (config.ativaBD):
                                         bd(pkt)
-                    else:
-                        # Aumento o temposleep aqui para algo que case com o tempo de envio das informacoes do dispositivo
-                        temposleep = temposleep + 0.1
+                    # pkt_info precisa estar fora do laco principal do pacote por que se travar nao envia mais pacotes de inicializacao
+                    if (pkt_info == None):
+                        # Ainda nao foi inicializado o sistema e/ou nao recebi o pacote de hardware. Tentando enviar para receber os dados
+                        if ((i % config.pacotesenvio) == 0):
+                            if (send_extended < 4):
+                                enviapacote(ser,2)
+                                send_extended = send_extended + 1
+                            else:
+                                enviapacote(ser,random.randint(0,2))
+                            slog(f"Pacote de hardware ainda nao recebido. Enviando string de inicializacao a cada {pacotesenvio} pacotes.")
                     dadoswaiting = ser.in_waiting
-            if (pkt_info == None):
-                # Ainda nao foi inicializado o sistema e/ou nao recebi o pacote de hardware. Tentando enviar para receber os dados
-                if (tempoenvio):
-                    tempoenvioanterior = tempoenvio
-                    slog(f"Pacote de Hardware nao foi recebido ainda. Ultimo envio em {tempoenvio.strftime('%d/%m/%Y %H:%M:%S')}")
-                    segundosentre = tempoenvio - tempoenvioanterior
-                    if (segundosentre > segundosaguardarenviopkthardware):
-                        if (send_extended < 4):
-                            enviapacote(ser,1)
-                            send_extended = send_extended + 1
-                        else:
-                            enviapacote(ser,random.randint(0,1))
-                        tempoenvio = time.time()
-                        slog(f"Tempo Insuficiente: incrementando o tempo de leitura. Tempo atual {segundosaguardarenviopkthardware} s.")
-                        segundosaguardarenviopkthardware = segundosaguardarenviopkthardware + 0.01
         time.sleep(temposleep)
         i = i + 1
 except Exception as inst:
@@ -164,6 +179,8 @@ except Exception as inst:
 finally:
     slog("Enviando pacote de finalizacao...")
     if (ser):
+        enviapacote(ser,3)
+        time.sleep(1)
         enviapacote(ser,4)
         ser.close()
         slog("Pacote enviado e serial finalizada.")
@@ -174,5 +191,3 @@ finally:
         nut(None)
     if (config.ativaJSON):
         js(None)
-     
-        

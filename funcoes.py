@@ -182,21 +182,21 @@ def enviapacote(ser,tipopacote = 0):
     # Envia varios tipos de pacote
        
     pacotes_inicializacao = [
-        # 0 - Inicializacao normal
-        [0xFF, 0x09, 0x53, 0x03, 0x00, 0x00, 0x00, 0x5F, 0xFE],
-        # 1 - Inicializacao Estendida
+        # 0 - Inicializacao legada
+        [0xFF, 0x5, 0x1, 0x6, 0xFE],
+        # 1 - Inicializacao padrao
+        [0xFF, 0x09, 0x53, 0x03, 0x00, 0x00, 0x00, 0x5F, 0xFE], 
+        # 2 - Inicializacao Estendida
         [0xFF, 0x09, 0x53, 0x83, 0x00, 0x00, 0x00, 0xDF, 0xFE],
-        # 2 - Finalizacao
+        # 3 - Finalizacao
         [0xFF, 0x09, 0x53, 0x01, 0x00, 0x00, 0x00, 0x5D, 0xFE], 
-        # 3 - Valor de potencia
-        [0xFF, ord('W'), 3, dt.year & 0xFF, dt.month & 0xFF, dt.day & 0xFF, 0x00, dt.hour & 0xFF, dt.minute & 0xFF, dt.second & 0xFF, 0xF3],
         # 4 - Finalizacao Extendida
-        [0xFF, 0x09, 0x53, 0b00000000, 0x00, 0x00, 0x00, 0xFE],
-        # 5 - Pacote especial
-        [0xFF, 0x5, 0x1, 0x6, 0xFE]
+        [0xFF, 0x09, 0x53, 0x81, 0x00, 0x00, 0x00, 0xDD, 0xFE],
+        # 5 - Valor de potencia
+        [0xFF, ord('W'), 3, dt.year & 0xFF, dt.month & 0xFF, dt.day & 0xFF, 0x00, dt.hour & 0xFF, dt.minute & 0xFF, dt.second & 0xFF, 0xF3]
     ]
     pacote_inicializacao = pacotes_inicializacao[tipopacote]
-    if not (tipopacote in [5]):
+    if not (tipopacote in [0]):
         checksum = calcula_checksum(pacote_inicializacao)
         pacote_inicializacao[7] = checksum
     if (ser):
@@ -395,29 +395,29 @@ def tratar_datapacket(pacote,tempoleitura,DebugTela = False,pkt_infonobreak = No
         pprint.pprint(resposta)
     return resposta
 
-ef criadatapacket(dado):
+def criadatapacket(dado):
     global datapacket
     global datapacketstart
     global datapacketsize 
     global datapacketactualsize
 
     retorno = None
-    if (dado ==  b'\xff'):
-        # Inicio do pacote
+    if ((dado ==  b'\xff') and (len(datapacket) >= datapacketsize)):
+        # Inicio do pacote? Nao sei. Descobrimos que pode vir 0xFF no MEIO do pacote. Ai lascou-se. Temos que ver se o pacote foi terminado de montar.
         datapacketstart = True
         datapacketsize = 0
         datapacket = []
-        slog(f"Inicio do Datapacket. Marcado start e zerado tamanho do pacote. Dado recebido no pacote {dado}")
+        #slog(f"Inicio do Datapacket. Marcado start e zerado tamanho do pacote. Dado recebido no pacote {dado}")
 
     if (datapacketstart):
         datapacket.append(dado)
         if (len(datapacket) == 2):
             # Segundo pacote eh o comprimento. O valor de retorno é hexa
-            datapacketsize = int.from_bytes(dado, byteorder='big')
-            slog(f"Comprimento do pacote definido para: {datapacketsize}. Datapacket atual {datapacket}.")
+            datapacketsize = convertebyte(dado)
+            #slog(f"Comprimento do pacote definido para: {datapacketsize}. Datapacket atual {datapacket}.")
         # Se por acaso chegou no 0xFE da uma olhada
-        if (dado == b'\xfe'):
-            slog(f"Possivel final do pacote. Pacote atual {datapacket}. Tamanho atual {len(datapacket)}. Tamanho esperado {datapacketsize}")
+        #if (dado == b'\xfe'):
+        #    slog(f"Possivel final do pacote. Pacote atual {datapacket}. Tamanho atual {len(datapacket)}. Tamanho esperado {datapacketsize}")
         # Tenho que ler enquanto não chegar ao tamanho do pacote e não chegar no fim da transmissão que é 0xFE
         if ((len(datapacket) == datapacketsize) and (dado == b'\xfe')):
             # Fim da transmissao
@@ -427,6 +427,7 @@ ef criadatapacket(dado):
             # Zeramos so para garantir
             datapacket = []
             datapacketstart = False
+            datapacketsize = 0
     return retorno
 
 def atualizarmaximos(pkt_dados):
