@@ -6,12 +6,12 @@ IMPORTS
     DisplayString FROM SNMPv2-TC;
 
 nhssnmpmib MODULE-IDENTITY
-    LAST-UPDATED "202501251742Z"
+    LAST-UPDATED "202501252342Z"
     ORGANIZATION "Gerado Automaticamente"
     CONTACT-INFO "lucas@lucas.inf.br"
     DESCRIPTION "NHS UPS SNMP"
-    REVISION "202501251742Z"
-    DESCRIPTION 
+    REVISION "202501252342Z"
+    DESCRIPTION
         "This is a dynamically generated MIB."
     ::= { enterprises 9999 }
 
@@ -1234,42 +1234,50 @@ autonomia152 OBJECT-TYPE
         "OID dynamically generated for autonomia."
     ::= { nhssnmpmibObjects 46 }
 
-tensaosaida153 OBJECT-TYPE
+sautonomia153 OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "OID dynamically generated for sautonomia."
+    ::= { nhssnmpmibObjects 47 }
+
+tensaosaida154 OBJECT-TYPE
     SYNTAX      Integer32
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
         "OID dynamically generated for tensao_saida."
-    ::= { nhssnmpmibObjects 47 }
+    ::= { nhssnmpmibObjects 48 }
 
-sobretensao154 OBJECT-TYPE
+sobretensao155 OBJECT-TYPE
     SYNTAX      Integer32
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
         "OID dynamically generated for sobretensao."
-    ::= { nhssnmpmibObjects 48 }
+    ::= { nhssnmpmibObjects 49 }
 
-subtensao155 OBJECT-TYPE
+subtensao156 OBJECT-TYPE
     SYNTAX      Integer32
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
         "OID dynamically generated for subtensao."
-    ::= { nhssnmpmibObjects 49 }
+    ::= { nhssnmpmibObjects 50 }
 
-eficiencia156 OBJECT-TYPE
+eficiencia157 OBJECT-TYPE
     SYNTAX      Integer32
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
         "OID dynamically generated for eficiencia."
-    ::= { nhssnmpmibObjects 50 }
+    ::= { nhssnmpmibObjects 51 }
 
 nhssnmpmibConformance OBJECT IDENTIFIER ::= { nhssnmpmib 2 }
 
 nhssnmpmibGroup OBJECT-GROUP
-    OBJECTS { tempoleitura1, comprimento2, tipopacote3, tensaodeentradarmspartealta4, tensaodeentradarmspartebaixa5, vacinrms6, tensaobateriapartealta7, tensaobateriapartebaixa8, vdcmed9, tensaoatualbateria10, potrms11, tensaodeentradaminimapartealta12, tensaodeentradaminimapartebaixa13, vacinrmsmin14, tensaodeentradamaximapartealta15, tensaodeentradamaximapartebaixa16, vacinrmsmax17, tensaodesaidarmspartealta18, tensaodesaidarmspartebaixa19, vacoutrms20, temperaturapartealta21, temperaturapartebaixa22, tempmed23, icarregrms24, potenciacarregador25, status26, arraybitsstatus027, arraybitsstatus128, arraybitsstatus229, arraybitsstatus330, arraybitsstatus431, arraybitsstatus532, arraybitsstatus633, arraybitsstatus734, carregadorativo35, bypassativo36, saidaem220v37, entradaem220v38, falharapidadarede39, falhadarede40, bateriabaixa41, modobateria42, checksum43, checksumcalculado44, checksumok45, tempoleitura46, comprimento47, tipopacote48, serial49, modelo50, versaodohardware51, versaodosoftware52, configuracao53, arraybitsconfiguracao054, arraybitsconfiguracao155, arraybitsconfiguracao256, arraybitsconfiguracao357, arraybitsconfiguracao458, arraybitsconfiguracao559, arraybitsconfiguracao660, arraybitsconfiguracao761, modooem62, buzzerinativo63, potmindesativada64, rearmeativado65, bootloaderativado66, alarmertcativado67, numerodebaterias68, subtensaoem120v69, sobretensaoem120v70, subtensaoem220v71, sobretensaoem220v72, tensaodesaida120v73, tensaodesaida220v74, status75, arraybitsstatus076, arraybitsstatus177, arraybitsstatus278, arraybitsstatus379, arraybitsstatus480, arraybitsstatus581, arraybitsstatus682, arraybitsstatus783, entradaem220v84, saidaem220v85, bateriaselada86, mostrartensaodesaida87, mostrartemperatura88, mostrarcorrentedocarregador89, correntedocarregador90, checksumcalculado91, checksum92, checksumok93, inteiro94, caractere95, inteiro96, caractere97, inteiro98, caractere99, inteiro100, caractere101, inteiro102, caractere103, inteiro104, caractere105, inteiro106, caractere107, inteiro108, caractere109, inteiro110, caractere111, inteiro112, caractere113, inteiro114, caractere115, inteiro116, caractere117, inteiro118, caractere119, inteiro120, caractere121, inteiro122, caractere123, inteiro124, caractere125, ano126, mes127, diadasemana128, dia129, hora130, minuto131, segundo132, alarmemes133, alarmediadasemana134, alarmedia135, alarmehora136, alarmeminuto137, alarmesegundo138, nome139, ultimaleitura140, ultimaleiturafmt141, descricaomodelo142, potencianominal143, potenciaaparente144, fatorconversao145, numerobaterias146, ah147, tensaobateria148, potencianominalatual149, potenciaaparenteatual150, amperagemsaida151, autonomia152, tensaosaida153, sobretensao154, subtensao155, eficiencia156 }
+    OBJECTS { tempoleitura1, comprimento2, tipopacote3, tensaodeentradarmspartealta4, tensaodeentradarmspartebaixa5, vacinrms6, tensaobateriapartealta7, tensaobateriapartebaixa8, vdcmed9, tensaoatualbateria10, potrms11, tensaodeentradaminimapartealta12, tensaodeentradaminimapartebaixa13, vacinrmsmin14, tensaodeentradamaximapartealta15, tensaodeentradamaximapartebaixa16, vacinrmsmax17, tensaodesaidarmspartealta18, tensaodesaidarmspartebaixa19, vacoutrms20, temperaturapartealta21, temperaturapartebaixa22, tempmed23, icarregrms24, potenciacarregador25, status26, arraybitsstatus027, arraybitsstatus128, arraybitsstatus229, arraybitsstatus330, arraybitsstatus431, arraybitsstatus532, arraybitsstatus633, arraybitsstatus734, carregadorativo35, bypassativo36, saidaem220v37, entradaem220v38, falharapidadarede39, falhadarede40, bateriabaixa41, modobateria42, checksum43, checksumcalculado44, checksumok45, tempoleitura46, comprimento47, tipopacote48, serial49, modelo50, versaodohardware51, versaodosoftware52, configuracao53, arraybitsconfiguracao054, arraybitsconfiguracao155, arraybitsconfiguracao256, arraybitsconfiguracao357, arraybitsconfiguracao458, arraybitsconfiguracao559, arraybitsconfiguracao660, arraybitsconfiguracao761, modooem62, buzzerinativo63, potmindesativada64, rearmeativado65, bootloaderativado66, alarmertcativado67, numerodebaterias68, subtensaoem120v69, sobretensaoem120v70, subtensaoem220v71, sobretensaoem220v72, tensaodesaida120v73, tensaodesaida220v74, status75, arraybitsstatus076, arraybitsstatus177, arraybitsstatus278, arraybitsstatus379, arraybitsstatus480, arraybitsstatus581, arraybitsstatus682, arraybitsstatus783, entradaem220v84, saidaem220v85, bateriaselada86, mostrartensaodesaida87, mostrartemperatura88, mostrarcorrentedocarregador89, correntedocarregador90, checksumcalculado91, checksum92, checksumok93, inteiro94, caractere95, inteiro96, caractere97, inteiro98, caractere99, inteiro100, caractere101, inteiro102, caractere103, inteiro104, caractere105, inteiro106, caractere107, inteiro108, caractere109, inteiro110, caractere111, inteiro112, caractere113, inteiro114, caractere115, inteiro116, caractere117, inteiro118, caractere119, inteiro120, caractere121, inteiro122, caractere123, inteiro124, caractere125, ano126, mes127, diadasemana128, dia129, hora130, minuto131, segundo132, alarmemes133, alarmediadasemana134, alarmedia135, alarmehora136, alarmeminuto137, alarmesegundo138, nome139, ultimaleitura140, ultimaleiturafmt141, descricaomodelo142, potencianominal143, potenciaaparente144, fatorconversao145, numerobaterias146, ah147, tensaobateria148, potencianominalatual149, potenciaaparenteatual150, amperagemsaida151, autonomia152, sautonomia153, tensaosaida154, sobretensao155, subtensao156, eficiencia157 }
     STATUS  current
     DESCRIPTION
         "Grupo de conformidade para todos os objetos da MIB."
