@@ -52,3 +52,17 @@ mqtt_interval = 4
 hw_pktread = True
 # Modo de leitura do pacote de Dados: 0 - Leitura normal, 1 (padrão) - Leitura Invertida
 data_pktread = True
+# Modo de envio de pacote de Inicialização: 0 (padrão) - Conforme sistema, 1 - Envia inicialização legada, 2 - Envia inicialização padrão, 3 - Envia inicialização extendida
+modo_envio_inicializacao = 0
+# Baud rate da porta serial
+baudrate = 2400
+# Paridade da porta serial (N - None, E - Even, O - Odd)
+parity = 'N'
+# Stop bits da porta serial (1, 1.5, 2)
+stopbits = 1
+# Controle de fluxo da porta serial (True - Habilitado, False - Desabilitado)
+rtscts = False
+# Habilita o modo exclusivo da porta serial (True - Habilitado, False - Desabilitado)
+exclusive = True
+# Tempo de espera entre leituras da porta serial
+temposleepread = 1

@@ -34,7 +34,7 @@ try:
     pkt = None
     pkt_info = None
     # Abre a porta Serial
-    ser = serial.Serial(config.device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True, exclusive=True)
+    ser = serial.Serial(config.device, baudrate=config.baudrate, parity=config.parity, stopbits=config.stopbits, rtscts=config.rtscts, exclusive=config.exclusive)
     while (not encerrar):
         # Verifica se houve o timeout de leitura. Caso tenha, zera todos os dados
         lastread = time.time() - lastdp
@@ -47,22 +47,36 @@ try:
             # Zero temposleep. Pode estar muito alto
             temposleep = 0
             if (ser.isOpen()):
-                enviapacote(ser,random.randint(0,2))
+                if (config.modo_envio_inicializacao == 0):
+                    enviapacote(ser,random.randint(0,2))
+                elif (config.modo_envio_inicializacao == 1):
+                    enviapacote(ser,0)
+                elif (config.modo_envio_inicializacao == 2):
+                    enviapacote(ser,1)
+                elif (config.modo_envio_inicializacao == 3):
+                    enviapacote(ser,2)
         if (ser.isOpen() == False):
-            ser = serial.Serial(config.device, baudrate=2400, bytesize=8, parity='N', stopbits=1, rtscts=True, exclusive=True)
+            ser = serial.Serial(config.device, baudrate=config.baudrate, parity=config.parity, stopbits=config.stopbits, rtscts=config.rtscts, exclusive=config.exclusive)
             slog("Serial estava fechada. Reabrindo...")
         else:
             if (i == 0):
                 # Nenhuma interacao foi feita. Vou encerrar o envio de dados anteriores e inicializar novamente
                 enviapacote(ser,3)
-                time.sleep(1)
+                time.sleep(config.temposleepread)
                 enviapacote(ser,4)
                 slog(f"Encerrando envio de pacotes para reiniciar comunicacao")
-                enviapacote(ser,0)
-                time.sleep(2)
-                enviapacote(ser,1)
-                time.sleep(2)
-                enviapacote(ser,2)
+                if (config.modo_envio_inicializacao == 0):
+                    enviapacote(ser,0)
+                    time.sleep(config.temposleepread)
+                    enviapacote(ser,1)
+                    time.sleep(config.temposleepread)
+                    enviapacote(ser,2)
+                elif (config.modo_envio_inicializacao == 1):
+                    enviapacote(ser,0)
+                elif (config.modo_envio_inicializacao == 2):
+                    enviapacote(ser,1)
+                elif (config.modo_envio_inicializacao == 3):
+                    enviapacote(ser,2)
                 slog(f"Reinicializacao de comunicacao concluida.")
             dadoswaiting = ser.in_waiting
             if (dadoswaiting > 0):
@@ -186,7 +200,7 @@ finally:
     slog("Enviando pacote de finalizacao...")
     if (ser):
         enviapacote(ser,3)
-        time.sleep(1)
+        time.sleep(config.temposleepread)
         enviapacote(ser,4)
         ser.close()
         slog("Pacote enviado e serial finalizada.")
