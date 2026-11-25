@@ -101,6 +101,46 @@ upsinfo = {
     68: {"upsdesc": "PREMIUM RACK ONLINE 3000VA", "VA": 3000},
     69: {"upsdesc": "PREMIUM ONLINE 3000VA", "VA": 3000},
     70: {"upsdesc": "LASER ONLINE 4000VA", "VA": 4000},
+    71: {"upsdesc": "LASER ONLINE 7500VA", "VA": 7500},
+    72: {"upsdesc": "LASER ONLINE BIFASICO 5000VA", "VA": 5000},
+    73: {"upsdesc": "LASER ONLINE BIFASICO 6000VA", "VA": 6000},
+    74: {"upsdesc": "LASER ONLINE BIFASICO 7500VA", "VA": 7500},
+    75: {"upsdesc": "NHS MINI ST", "VA": 500},
+    76: {"upsdesc": "NHS MINI 120", "VA": 120},
+    77: {"upsdesc": "NHS MINI BIVOLT", "VA": 500},
+    78: {"upsdesc": "PDV 600", "VA": 600},
+    79: {"upsdesc": "NHS MINI MAX", "VA": 500},
+    80: {"upsdesc": "NHS MINI EXT", "VA": 500},
+    81: {"upsdesc": "NHS AUTONOMY PDV 4T", "VA": 4000},
+    82: {"upsdesc": "NHS AUTONOMY PDV 8T", "VA": 8000},
+    83: {"upsdesc": "NHS COMPACT PLUS RACK 1200VA", "VA": 1200},
+    84: {"upsdesc": "PDV SENOIDAL ISOLADOR 1500VA", "VA": 1500},
+    85: {"upsdesc": "NHS PDV RACK 1500VA", "VA": 1500},
+    86: {"upsdesc": "NHS PDV 1400VA S GII", "VA": 1400},
+    87: {"upsdesc": "PDV SENOIDAL ISOLADOR 1500VA", "VA": 1500},
+    88: {"upsdesc": "LASER PRIME SENOIDAL ISOLADOR 2000VA", "VA": 2000},
+    89: {"upsdesc": "PREMIUM SENOIDAL 2400VA GII", "VA": 2400},
+    90: {"upsdesc": "NHS PDV 1400VA S 8T GII", "VA": 1400},
+    91: {"upsdesc": "PREMIUM ONLINE 2000VA", "VA": 2000},
+    92: {"upsdesc": "LASER PRIME ONLINE 2200VA", "VA": 2200},
+    93: {"upsdesc": "PREMIUM RACK ONLINE 2200VA", "VA": 2200},
+    94: {"upsdesc": "PREMIUM SENOIDAL 2400VA GII", "VA": 2400},
+    95: {"upsdesc": "LASER ONLINE 10000VA", "VA": 10000},
+    96: {"upsdesc": "LASER ONLINE BIFASICO 10000VA", "VA": 10000},
+    97: {"upsdesc": "LASER SENOIDAL 3300VA GII", "VA": 3300},
+    98: {"upsdesc": "LASER SENOIDAL 2600VA GII", "VA": 2600},
+    99: {"upsdesc": "PREMIUM SENOIDAL 3000VA GII", "VA": 3000},
+    100: {"upsdesc": "PREMIUM SENOIDAL 2200VA GII", "VA": 2200},
+    101: {"upsdesc": "LASER ONLINE BIFASICO 4000VA", "VA": 4000},
+    102: {"upsdesc": "LASER ONLINE 12000VA", "VA": 12000},
+    103: {"upsdesc": "LASER ONLINE 8000VA", "VA": 8000},
+    104: {"upsdesc": "PDV SENOIDAL ISOLADOR 1000VA", "VA": 1000},
+    105: {"upsdesc": "MINI SENOIDAL 500VA", "VA": 500},
+    106: {"upsdesc": "LASER SENOIDAL 5000VA GII", "VA": 5000},
+    107: {"upsdesc": "COMPACT PLUS SENOIDAL 1000VA", "VA": 1000},
+    108: {"upsdesc": "QUAD_COM 80A", "VA": 0},
+    109: {"upsdesc": "LASER ONLINE 5000VA", "VA": 5000},
+    113: {"upsdesc": "PDV SENOIDAL ISOLADOR 700VA", "VA": 700},
 }
 
 # Funcao que converte o numero de segundos em horas, minutos e segundos
@@ -205,7 +245,7 @@ def enviapacote(ser,tipopacote = 0):
         ser.reset_input_buffer()
     slog(f"Pacote enviado: {pacote_inicializacao} {retornahexa(pacote_inicializacao)}.")
     
-def arraybinario(data):
+def arraybinario(data, invertido = True):
     """Turn the string data, into a list of bits (1, 0)'s"""
     if sys.version_info[0] < 3:
         # Turn the strings into integers. Python 3 uses a bytes
@@ -223,7 +263,9 @@ def arraybinario(data):
                 result[pos] = 0
             pos += 1
             i -= 1
-    return invertearray(result)
+    if invertido:
+        return invertearray(result)
+    return result
 
 # Função para imprimir os bits de um byte
 def imprimir_bits(byte):
@@ -249,7 +291,8 @@ def tratar_datapacket(pacote,tempoleitura,DebugTela = False,pkt_infonobreak = No
             resposta["versao_do_hardware"] = convertebyte(pacote[4])
             resposta["versao_do_software"] = convertebyte(pacote[5])
             resposta["configuracao"] = convertebyte(pacote[6])
-            resposta["arraybits_configuracao"] = arraybinario(pacote[6])
+            # Pacote de hardware: a opcao e hw_pktread (estava usando a do pacote de dados)
+            resposta["arraybits_configuracao"] = arraybinario(pacote[6], invertido = config.hw_pktread)
             
             valores = {}
             valores["modo_oem"] = 'S' if resposta["arraybits_configuracao"][0] == 1 else 'N'
@@ -268,7 +311,7 @@ def tratar_datapacket(pacote,tempoleitura,DebugTela = False,pkt_infonobreak = No
             resposta["tensao_de_saida_120_V"] = convertebyte(pacote[12])
             resposta["tensao_de_saida_220_V"] = convertebyte(pacote[13])
             resposta["status"] = convertebyte(pacote[14])
-            resposta["arraybits_status"] = arraybinario(pacote[14])
+            resposta["arraybits_status"] = arraybinario(pacote[14], invertido = config.hw_pktread)
             
             valores = {}
             valores["entrada_em_220_V"] = 'S' if resposta["arraybits_status"][0] == 1 else 'N'
@@ -432,8 +475,9 @@ def criadatapacket(dado):
 
 def atualizarmaximos(pkt_dados):
     global minmax
-    minmax["voltagem_entrada"]["max"] = pkt_dados["VACINRMSMIN"]
-    minmax["voltagem_entrada"]["min"] = pkt_dados["VACINRMSMAX"]
+    # Estavam trocados: o maximo recebia o minimo e o minimo recebia o maximo
+    minmax["voltagem_entrada"]["max"] = pkt_dados["VACINRMSMAX"]
+    minmax["voltagem_entrada"]["min"] = pkt_dados["VACINRMSMIN"]
     if (pkt_dados["tensao_atual_bateria"] > minmax["tensaobateria"]["max"]):
         minmax["tensaobateria"]["max"] = pkt_dados["tensao_atual_bateria"]
     if (pkt_dados["tensao_atual_bateria"] < minmax["tensaobateria"]["min"]):
@@ -511,7 +555,8 @@ def nut(pkt):
             status = "OB"
             if (st["bateria_baixa"] == 'S'):
                 # If battery is LOW, warn user!
-                status = "LB"
+                # O LB se soma ao OB. Sozinho, o upsmon do NUT pode nao tratar como queda de energia
+                status = "OB LB"
         else:
             # Verifique se a ENERGIA (rede elétrica) não está presente. Bem, podemos verificar a falha na rede também...
             if (pkt["VACINRMS"] <= pkt["subtensao"]) or (st["falha_da_rede"] == 'S'):
@@ -531,7 +576,7 @@ def nut(pkt):
                             status = "OL"
                 else:
                     if (st["bateria_baixa"] == 'S'):
-                        status = "LB"
+                        status = "OB LB"
                     else:
                         status = "OB"
         # |===============================================================================
@@ -669,7 +714,11 @@ def nut(pkt):
         #| input.voltage.high.critical | High critical threshold (V)       | 240
         arq.write("input.voltage.high.critical: %03.3d\r\n" % chigh)
         #| input.voltage.nominal       | Nominal input voltage (V)         | 120
-        arq.write("input.voltage.nominal: %03.3d\r\n" % pkt["tensao_saida"])
+        # Tensao nominal da ENTRADA, conforme o indicador de entrada em 220V. Publicava a de saida
+        if (pkt["valores_status"]["entrada_em_220_V"] == 'S'):
+            arq.write("input.voltage.nominal: %03.3d\r\n" % pkt["dadosnobreak"]["tensao_de_saida_220_V"])
+        else:
+            arq.write("input.voltage.nominal: %03.3d\r\n" % pkt["dadosnobreak"]["tensao_de_saida_120_V"])
         #| input.voltage.extended      | Extended input voltage range      | no
         #| input.transfer.delay        | Delay before transfer to mains
         #                                (seconds)                         | 60
@@ -817,7 +866,8 @@ def nut(pkt):
         #| power.minimum.percent | Minimum seen percentage of apparent power
         arq.write("output.power.minimum.percent: %03.3d\r\n" % minmax["potencia"]["min"])
         #| realpower             | Real power (W)
-        arq.write("output.realpower: %s\r\n" % pkt["potencia_aparente"])
+        # Potencia real ATUAL da saida. Publicava a nominal
+        arq.write("output.realpower: %s\r\n" % pkt["potencia_aparente_atual"])
         #| powerfactor           | Power Factor (dimensionless value between 0.00 and 1.00)
         arq.write("output.powerfactor: %s\r\n" % pkt["fator_conversao"])
         #| crestfactor           | Crest Factor (dimensionless value greater or equal to 1)

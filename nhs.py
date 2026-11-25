@@ -102,9 +102,11 @@ try:
                                     else:
                                         pkt["descricaomodelo"] = config.descricaomodelo
                                         pkt["potencia_nominal"] = config.potencia_nominal
-                                    pkt["potencia_nominal"] = config.potencia_nominal
+                                    # Havia aqui uma linha que trocava sempre a potencia da tabela pela do config.py.
+                                    # Agora a do config.py so vale quando o modelo nao esta na tabela
                                     # Potencia Aparente - Essa vai ser a potencia em Watts que voce vai ter
-                                    pkt["potencia_aparente"] = config.potencia_nominal * config.fator_conversao
+                                    # Usava a potencia do config.py mesmo com o modelo na tabela, e saia mais W do que VA
+                                    pkt["potencia_aparente"] = pkt["potencia_nominal"] * config.fator_conversao
                                     pkt["fator_conversao"] = config.fator_conversao
                                     if (config.numero_baterias):
                                         pkt["numero_baterias"] = config.numero_baterias
@@ -137,10 +139,14 @@ try:
                                         pkt["sautonomia"] = "NOBREAK ONLINE"
                                     if (pkt["valores_status"]["saida_em_220_V"] == 'S'):
                                         pkt["tensao_saida"] = pkt_info["tensao_de_saida_220_V"]
+                                    else:
+                                        pkt["tensao_saida"] = pkt_info["tensao_de_saida_120_V"]
+                                    # A sobretensao e a subtensao sao limites da ENTRADA. Estavam seguindo o indicador de SAIDA
+                                    # em 220V, e um nobreak com entrada em 220V e saida em 120V ficava com os limites de 120V
+                                    if (pkt["valores_status"]["entrada_em_220_V"] == 'S'):
                                         pkt["sobretensao"] = pkt_info["sobretensao_em_220_V"]
                                         pkt["subtensao"] = pkt_info["subtensao_em_220_V"]
                                     else:
-                                        pkt["tensao_saida"] = pkt_info["tensao_de_saida_120_V"]
                                         pkt["sobretensao"] = pkt_info["sobretensao_em_120_V"]
                                         pkt["subtensao"] = pkt_info["subtensao_em_120_V"]
                                     # Eficiencia do nobreak: tensao de entrada / tensao de saida

@@ -48,3 +48,7 @@ mqtt_qos = 0
 # Intevalo de envio de pacotes do MQTT
 # O NHS faz muitas leituras de pacotes nas interfaces. Por isso, fica interessante ignorar alguns pacotes e enviar via MQTT apenas X em X vezes
 mqtt_interval = 4
+# Modo de leitura do pacote de Hardware: 0 - Leitura normal, 1 (padrão) - Leitura Invertida
+hw_pktread = True
+# Modo de leitura do pacote de Dados: 0 - Leitura normal, 1 (padrão) - Leitura Invertida
+data_pktread = True
