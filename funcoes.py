@@ -414,18 +414,21 @@ def tratar_datapacket(pacote,tempoleitura,DebugTela = False,pkt_infonobreak = No
             resposta["potencia_carregador"] = resposta["ICARREGRMS"] * 30
             
             resposta["status"] = convertebyte(pacote[17])
-            resposta["arraybits_status"] = arraybinario(pacote[17])
+            resposta["arraybits_status"] = arraybinario(pacote[17], config.data_pktread)
             
             status = resposta["status"]
             valores = {}
-            valores["carregador_ativo"] = 'S' if bool(status & 0b10000000) else 'N'
-            valores["bypass_ativo"] = 'S' if bool(status & 0b01000000) else 'N'
-            valores["saida_em_220_V"] = 'S' if bool(status & 0b00100000) else 'N'
-            valores["entrada_em_220_V"] = 'S' if bool(status & 0b00010000) else 'N'
-            valores["falha_rapida_da_rede"] = 'S' if bool(status & 0b00001000) else 'N'
-            valores["falha_da_rede"] = 'S' if bool(status & 0b00000100) else 'N'
-            valores["bateria_baixa"] = 'S' if bool(status & 0b00000010) else 'N'
-            valores["modo_bateria"] = 'S' if bool(status & 0b00000001) else 'N'
+            # Os indicadores saiam do byte por mascaras fixas, e a opcao data_pktread nao mudava nada neles.
+            # Agora saem do arraybits_status, como no pacote de hardware. Com data_pktread = True (padrao)
+            # o resultado e o mesmo de antes: o indicador n e o bit n do byte
+            valores["carregador_ativo"] = 'S' if resposta["arraybits_status"][7] == 1 else 'N'
+            valores["bypass_ativo"] = 'S' if resposta["arraybits_status"][6] == 1 else 'N'
+            valores["saida_em_220_V"] = 'S' if resposta["arraybits_status"][5] == 1 else 'N'
+            valores["entrada_em_220_V"] = 'S' if resposta["arraybits_status"][4] == 1 else 'N'
+            valores["falha_rapida_da_rede"] = 'S' if resposta["arraybits_status"][3] == 1 else 'N'
+            valores["falha_da_rede"] = 'S' if resposta["arraybits_status"][2] == 1 else 'N'
+            valores["bateria_baixa"] = 'S' if resposta["arraybits_status"][1] == 1 else 'N'
+            valores["modo_bateria"] = 'S' if resposta["arraybits_status"][0] == 1 else 'N'
             resposta["valores_status"] = valores
             resposta["checksum"] = convertebyte(pacote[19])
             checksum = calcula_checksum(pacote)
